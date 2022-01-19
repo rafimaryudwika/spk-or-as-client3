@@ -22,6 +22,16 @@ const routes= [
         component: () => import('../views/penilaian/penilaian1/penilaian1-index.vue'),
     },
     {
+        path: '/penilaian1/edit/:id',
+        name: 'penilaian1.edit',
+        component: () => import('../views/penilaian/penilaian1/penilaian1-edit.vue'),
+    },
+    {
+        path: '/penilaian1/tambah/:id',
+        name: 'penilaian1.tambah',
+        component: () => import('../views/penilaian/penilaian1/penilaian1-edit.vue'),
+    },
+    {
         path: '/test',
         name: 'test.index',
         component: () => import('../views/hometest.vue')

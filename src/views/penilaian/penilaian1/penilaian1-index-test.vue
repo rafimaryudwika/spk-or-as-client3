@@ -45,8 +45,8 @@
                                         </th>
                                         <template
                                             v-for="(
-                                                subkriteria, index
-                                            ) in subkriteria.data"
+                                                sub, index
+                                            ) in state.subkriteria"
                                             :key="index"
                                         >
                                             <th
@@ -62,7 +62,7 @@
                                                     dark:text-gray-400
                                                 "
                                             >
-                                                {{ subkriteria.sub_kriteria }}
+                                                {{ sub.sub_kriteria }}
                                             </th>
                                         </template>
                                         <th
@@ -83,7 +83,7 @@
                                         <tr
                                             v-for="(
                                                 peserta1, index
-                                            ) in peserta1.data"
+                                            ) in state.peserta1"
                                             :key="index"
                                             class="
                                                 bg-white
@@ -117,47 +117,49 @@
                                                 {{ peserta1.nama }}
                                             </td>
                                             <template
-                                                v-if="peserta1.length == 0"
+                                                v-for="(
+                                                    penilaian, index
+                                                ) in state.result"
+                                                :key="index"
                                             >
                                                 <template
                                                     v-for="(
-                                                        subkriteria, index
-                                                    ) in subkriteria.data"
+                                                        sub, index
+                                                    ) in state.subkriteria"
                                                     :key="index"
                                                 >
-                                                    <td
-                                                        class="
-                                                            px-6
-                                                            py-4
-                                                            text-sm
-                                                            font-medium
-                                                            text-right
-                                                            whitespace-nowrap
+                                                    <template
+                                                        v-if="
+                                                            penilaian.nilai == 0
                                                         "
                                                     >
-                                                        Tidak ada data
-                                                    </td>
-                                                </template>
-                                            </template>
-                                            <template v-else>
-                                                <template
-                                                    v-for="(
-                                                        penilaian, index
-                                                    ) in transpose.data"
-                                                    :key="index"
-                                                >
-                                                    <td
-                                                        class="
-                                                            px-6
-                                                            py-4
-                                                            text-sm
-                                                            font-medium
-                                                            text-right
-                                                            whitespace-nowrap
-                                                        "
-                                                    >
-                                                        {{ penilaian.nilai }}
-                                                    </td>
+                                                        <td
+                                                            class="
+                                                                px-6
+                                                                py-4
+                                                                text-sm
+                                                                font-medium
+                                                                text-right
+                                                                whitespace-nowrap
+                                                            "
+                                                        >
+                                                            Tidak ada data
+                                                        </td>
+                                                    </template>
+                                                    <template v-else>
+                                                        <td
+                                                            class="
+                                                                px-6
+                                                                py-4
+                                                                text-sm
+                                                                font-medium
+                                                                text-right
+                                                                whitespace-nowrap
+                                                            "
+                                                        >
+                                                            {{ sub.id_sk1 }}
+                                                        </td>
+                                                    </template>
                                                 </template>
                                             </template>
                                             <!-- <template
@@ -211,59 +213,55 @@
 
 <script>
 import axios from 'axios'
-import { onMounted, ref, computed } from 'vue'
-import SideBar from './../../../components/SideBar.vue'
+import { onMounted, ref, reactive, computed, watchEffect } from 'vue'
 
 export default {
     components: {},
 
     setup() {
-        let peserta1 = ref([])
-        let result = ref([])
-        let penilaian1 = ref([])
-        let subkriteria = ref([])
+        const state = reactive({
+            peserta1: [],
+            penilaian1: [],
+            subkriteria: [],
+            result: [],
+        })
 
         onMounted(() => {
             axios
                 .get('http://127.0.0.1:8000/api/penilaian1')
-                .then((result) => {
-                    penilaian1.value = result.data
-                })
-                .catch((err) => {
-                    console.log(err.response)
+                .then((response) => {
+                    state.penilaian1 = response.data.data
+                    console.log(state.penilaian1)
                 })
             axios
                 .get('http://127.0.0.1:8000/api/penilaian1/table_sk1')
-                .then((result) => {
-                    subkriteria.value = result.data
-                })
-                .catch((err) => {
-                    console.log(err.response)
+                .then((response) => {
+                    state.subkriteria = response.data.data
+                    console.log(state.subkriteria)
                 })
             axios
                 .get('http://127.0.0.1:8000/api/penilaian1/peserta1')
-                .then((result) => {
-                    peserta1.value = result.data
-                })
-                .catch((err) => {
-                    console.log(err.response)
-                })
-            penilaian1.value.forEach((dat) => {
-                if (!result.value.find((r) => r.nim === dat.nim)) {
-                    result.value.push({ nim: dat.nim, nama: dat.nama })
-                }
-            }),
-                penilaian1.value.forEach((dat) => {
-                    let res = result.value.find((r) => r.nim === dat.nim)
-                    res[dat.id_sk1] = dat.nilai
+                .then((response) => {
+                    state.peserta1 = response.data.data
+                    console.log(state.peserta1)
                 })
         })
 
+        watchEffect(() => {
+            state.penilaian1.forEach((dat) => {
+                if (!state.result.find((r) => r.nim === dat.nim)) {
+                    state.result.push({ nim: dat.nim, nama: dat.nama })
+                }
+            })
+            state.penilaian1.forEach((dat) => {
+                let res = state.result.find((r) => r.nim === dat.nim)
+                res[dat.id_sk1] = dat.nilai
+            })
+            console.log(state.result)
+        })
+
         return {
-            peserta1,
-            penilaian1,
-            subkriteria,
-            transpose,
+            state,
         }
     },
 }
