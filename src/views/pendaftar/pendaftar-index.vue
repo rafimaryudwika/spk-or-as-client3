@@ -7,9 +7,9 @@
         </div>
         <div class="col-12">
             <div class="flex-1">
-                <div class="overflow-y-auto sm:-mx-6 lg:-mx-8">
-                    <div class="py-2 inline-clip sm:px-6 lg:px-12">
-                        <div class="overflow-hidden shadow-md sm:rounded-lg">
+                <div class="overflow-y-auto sm:-mx-6 lg:-mx-0">
+                    <div class="py-2 inline-clip sm:px-6 lg:px-4">
+                        <div class="sm:rounded-lg">
                             <button
                                 v-on:click="sorting"
                                 type="button"
@@ -103,7 +103,7 @@
                                 SortNameDsc
                             </button>
 
-                            <table class="min-w-full">
+                            <table class="min-w-full shadow-md ">
                                 <thead class="bg-gray-100 dark:bg-gray-700">
                                     <tr>
                                         <th
