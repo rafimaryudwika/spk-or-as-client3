@@ -17,33 +17,21 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import axios from 'axios'
-import { onMounted, ref, reactive, computed } from 'vue'
-import SideBar from './../../components/SideBar.vue'
-import order from './../../hooks/order'
-
+import { reactive } from 'vue'
+import order from '../../hooks/order.js'
 export default {
-    name: 'pendaftar-index',
-    components: {
-        SideBar,
-    },
-
+    name: 'UserTable',
     setup() {
-        const state = reactive({ pendaftar: [] })
-
-        onMounted(() => {
-            axios
-                .get('http://127.0.0.1:8000/api/pendaftar')
-                .then((response) => {
-                    state.pendaftar = response.data
-                    console.log(state.pendaftar)
-                })
+        const state = reactive({
+            users: [
+                { id: 0, name: 'John', email: 'john@a.com' },
+                { id: 1, name: 'Peter', email: 'peter@a.com' },
+                { id: 2, name: 'Dora', email: 'dora@a.com' },
+                { id: 3, name: 'Ben', email: 'ben@a.com' },
+            ],
         })
-
         const { orderItems, orderState } = order()
-        orderItems(state.pendaftar)
-
+        orderItems(state.users)
         return {
             state,
             orderItems,

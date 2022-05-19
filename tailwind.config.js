@@ -1,3 +1,5 @@
+const colors = require('tailwindcss/colors')
+
 module.exports = {
   purge: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
 
@@ -21,9 +23,16 @@ module.exports = {
   content: [],
   
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        green: colors.emerald,
+        yellow: colors.amber,
+        purple: colors.violet,
+        gray: colors.neutral,
+      }
+    },
   },
   plugins: [
-    require('@themesberg/flowbite/plugin'),
+    require('flowbite/plugin'),
   ],
 }

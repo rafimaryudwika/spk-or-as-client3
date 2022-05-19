@@ -214,8 +214,8 @@
 </template>
 
 <script>
-import axios from 'axios'
 import { onMounted, ref, reactive, computed } from 'vue'
+import http from "./../../http-common.js";
 
 export default {
     name: 'pendaftar-index',
@@ -225,11 +225,10 @@ export default {
         const state = reactive({ pendaftar: [] })
 
         onMounted(() => {
-            axios
-                .get('http://127.0.0.1:8000/api/pendaftar')
+            http
+                .get('/pendaftar')
                 .then((response) => {
                     state.pendaftar = response.data.data
-                    console.log(state.pendaftar)
                 })
         })
 

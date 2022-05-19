@@ -6,10 +6,10 @@
 </template>
 
 <script>
-import SideBar from './components/SideBar.vue'
+import SideBar from './components/SideBar.vue';
 
 export default {
-    name: 'pendaftar-index',
+    name: 'spk-or-as-app',
     components: {
         SideBar,
     },

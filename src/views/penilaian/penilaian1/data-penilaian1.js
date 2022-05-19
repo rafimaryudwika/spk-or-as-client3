@@ -1,25 +1,69 @@
-const { ref } = require("vue")
+import { onMounted, reactive, watchEffect } from 'vue'
+import http from "./../../../http-common.js";
 
-let penilaian1 = ref([])
+const state = reactive({
+  peserta1: [],
+  penilaian1: [],
+  subkriteria: [],
+  result: [],
+  peserta1Min: [],
+  rs: [],
+  merged: [],
+})
 
-axios.get('http://127.0.0.1:8000/api/penilaian1')
-                .then((result) => {
-                    penilaian1.value = result.data
-                })
-                .catch((err) => {
-                    console.log(err.response)
-                })
+onMounted(() => {
+  http
+      .get('/penilaian1')
+      .then((response) => {
+          state.penilaian1 = response.data.data
+      })
+//   http
+//       .get('/penilaian1/table_sk1')
+//       .then((response) => {
+//           state.subkriteria = response.data.data
+//       })
+//   http
+//       .get('/penilaian1/peserta1')
+//       .then((response) => {
+//           state.peserta1 = response.data.data
+//       })
+})
 
-const data = penilaian1
-  const result = [];
-  data.forEach(dat => {
-    if(!result.find(r => r.nim === dat.nim)) {
-      result.push({"nim":dat.nim, "nama": dat.nama})
-    }
-  });
-  data.forEach(dat => {
-    let res = result.find(r => r.nim === dat.nim)
-    res[dat.id_sk1] = dat.nilai
-  });
+watchEffect(() => {
+  state.penilaian1.forEach((dat) => {
+      if (!state.result.find((r) => r.nim === dat.nim)) {
+          state.result.push({ nim: dat.nim, nama: dat.nama })
+      }
+  })
+  state.penilaian1.forEach((dat) => {
+      let res = state.result.find((r) => r.nim === dat.nim)
+      res[dat.id_sk1] = dat.nilai
+  })
 
-  console.log(result)
+  state.peserta1Min = state.peserta1.map(
+      ({
+          bidang_fak,
+          fakultas,
+          jurusan,
+          gender,
+          tgl_lahir,
+          ...rest
+      }) => ({ ...rest })
+  )
+
+  const keys = state.result.map((data) =>
+      Object.keys(data).filter((key) => !isNaN(parseInt(key)))
+  )
+
+  state.peserta1Min.forEach((data, index) => {
+      keys[0].forEach((key) => {
+          state.peserta1Min[index][key] = null
+      })
+  })
+
+  state.rs = new Set(state.result.map((n) => n.nim))
+  state.merged = [
+      ...state.result,
+      ...state.peserta1Min.filter((n) => !state.rs.has(n.nim)),
+  ]
+})

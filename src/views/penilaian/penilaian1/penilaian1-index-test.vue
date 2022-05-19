@@ -157,7 +157,7 @@
                                                                 whitespace-nowrap
                                                             "
                                                         >
-                                                            {{ sub.id_sk1 }}
+                                                            {{ peserta[sub.id_sk1] }}
                                                         </td>
                                                     </template>
                                                 </template>
