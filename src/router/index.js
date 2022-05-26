@@ -29,7 +29,7 @@ const routes= [
     {
         path: '/penilaian1/tambah/:id',
         name: 'penilaian1.tambah',
-        component: () => import('../views/penilaian/penilaian1/penilaian1-edit.vue'),
+        component: () => import('../views/penilaian/penilaian1/penilaian1-tambah.vue'),
     },
     {
         path: '/test',
