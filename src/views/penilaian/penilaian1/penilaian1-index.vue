@@ -62,8 +62,8 @@
 
                                         <template v-for="k in state.subkriteria" :key="k.id_k1">
                                             <template v-if="peserta1.nilai[k.k_sc] == null">
-                                                <td
-                                                    class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
+                                                <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400"
+                                                    colspan=2>
                                                     Tidak ada data
                                                 </td>
                                             </template>
@@ -147,6 +147,7 @@ export default {
                 .get('/subkriteria1')
                 .then((response) => {
                     state.subkriteria = response.data.data
+                    console.log(state.subkriteria)
                 })
             http
                 .get('/kriteria1')

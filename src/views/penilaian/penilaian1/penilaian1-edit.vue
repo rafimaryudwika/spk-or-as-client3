@@ -2,40 +2,34 @@
     <div class="flex-1">
         <div class="col-12">
             <h1 class="px-6 py-6 mb-6 text-3xl font-extrabold">
-                Edit Data Nilai Peserta
+                Edit Data Penilaian Peserta
             </h1>
         </div>
         <div class="col-12">
             <div class="flex-1">
-                <div class="overflow-y-auto sm:-mx-6 lg:-mx-8">
-                    <div class="py-2 inline-clip sm:px-6 lg:px-12">
-                        <div class="overflow-hidden shadow-md sm:rounded-lg">
-                            <form class="space-y-6" v-on:submit.prevent="update()">
-                                <div class="space-y-4 rounded-md shadow-sm">
-                                    <div>
-                                        <label for="name" class="block text-sm font-medium text-gray-700 ">NIM</label>
-                                        <div class="mt-1">
-                                            <input type="text" name="name" id="name"
-                                                class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                                v-model="penilaian1.nim" />
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <label for="email" class="block text-sm font-medium text-gray-700 ">Nama</label>
-                                        <div class="mt-1">
-                                            <input type="text" name="email" id="email"
-                                                class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                                v-model="penilaian1.nim" />
-                                        </div>
-                                    </div>
-
-
+                <div class="overflow-y-auto sm:-mx-6 lg:-mx-0">
+                    <div class="py-2 inline-clip sm:px-6 lg:px-4">
+                        <div class="sm:rounded-lg">
+                            <form @submit.prevent="update()">
+                                <div class="mb-6">
+                                    <label for="nim"
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">NIM</label>
+                                    <input type="nim" id="disabled-input-2"
+                                        class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        disabled readonly v-model="inputPenilaian.nim" />
                                 </div>
-
+                                <div v-for="(sk, index) in state.listSubKriteria" :key="index" class="mb-6">
+                                    <label for="sk.k_sc"
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{
+                                                sk.kriteria
+                                        }} </label>
+                                    <input type="text" id="sk.k_sc"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        required v-model="inputPenilaian[sk.k_sc]" />
+                                </div>
                                 <button type="submit"
-                                    class="inline-flex items-center px-4 py-2 text-xs font-semibold tracking-widest text-white uppercase transition duration-150 ease-in-out bg-gray-800 border border-transparent rounded-md ring-gray-300 hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring disabled:opacity-25">
-                                    Save
+                                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    Submit
                                 </button>
                             </form>
                         </div>
@@ -47,62 +41,96 @@
 </template>
 
 <script>
-import { ref, reactive, onMounted } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import http from "./../../../http-common.js";
+import { onMounted, reactive, ref, watchEffect, computed } from 'vue'
+import http from './../../../http-common.js'
+import { useRouter, useRoute } from 'vue-router'
+
 export default {
+    components: {},
     setup() {
-        let penilaian1Form = reactive({
-            nim: '',
-            id_sk1: '',
-            nilai: '',
-        })
-
         const state = reactive({
-            peserta1: [],
-            penilaian1: [],
             subkriteria: [],
+            peserta: [],
+            listSubKriteria: []
         })
-
-        onMounted(() => {
-            http
-                .get('/penilaian1')
-                .then((response) => {
-                    state.peserta1 = response.data.data
-                })
+        let inputPenilaian = reactive({})
+        watchEffect(() => {
+            //transpose dari table sub-kriteria menjadi object untuk input data
+            inputPenilaian['nim'] = "";
+            for (let i = 0; i < state.subkriteria.length; i++) {
+                const outer = state.subkriteria[i];
+                if (outer.subkriteria) {
+                    for (let j = 0; j < outer.subkriteria.length; j++) {
+                        const inner = outer.subkriteria[j];
+                        const key = `${outer.k_sc}-${inner.sk_sc}`;
+                        inputPenilaian[key] = "";
+                    }
+                } else {
+                    inputPenilaian[outer.k_sc] = "";
+                }
+            }
+            //transpose dari table sub-kriteria menjadi list untuk perulangan (baik untuk input maupun v-model)
+            for (let i = 0; i < state.subkriteria.length; i++) {
+                const outer = state.subkriteria[i];
+                if (outer.subkriteria) {
+                    for (let j = 0; j < outer.subkriteria.length; j++) {
+                        const inner = outer.subkriteria[j];
+                        const kriteria = `${outer.kriteria} / ${inner.sub_kriteria}`
+                        const k_sc = `${outer.k_sc}-${inner.sk_sc}`;
+                        state.listSubKriteria.push({
+                            kriteria,
+                            k_sc,
+                        })
+                    }
+                } else {
+                    state.listSubKriteria.push({
+                        kriteria: outer.kriteria,
+                        k_sc: outer.k_sc,
+                    })
+                }
+            }
         })
-
-        const validation = ref([])
-
-        const router = useRouter()
 
         const route = useRoute()
-
         onMounted(() => {
-            http
-                .get('/penilaian1/${route.params.nim}')
-                .then((result) => { })
-                .catch((err) => { })
+            http.get('/subkriteria1')
+                .then((response) => {
+                    state.subkriteria = response.data.data
+                })
+            http.get(`/penilaian1/show/${route.params.id}`)
+                .then((response) => {
+                    inputPenilaian.nim = response.data.data[0].nim
+                    for (let i = 0; i < state.subkriteria.length; i++) {
+                        const outer = state.subkriteria[i];
+                        if (outer.subkriteria) {
+                            for (let j = 0; j < outer.subkriteria.length; j++) {
+                                const inner = outer.subkriteria[j];
+                                let props1 = `${outer.k_sc}-${inner.sk_sc}`;
+                                inputPenilaian[props1] = `${response.data.data[0].nilai[outer.k_sc][inner.sk_sc]}`
+                            }
+                        } else {
+                            let props2 = `${outer.k_sc}`;
+                            inputPenilaian[props2] = `${response.data.data[0].nilai[props2]}`
+                        }
+                    }
+                })
         })
 
+        const validation = ref([]);
+        const router = useRouter();
         function update() {
-            http
-                .put(
-                    '/penilaian1/${route.params.nim}',
-                    penilaian1
-                )
+            http.put(`/penilaian1/${route.params.id}`, inputPenilaian)
                 .then(() => {
-                    router
-                        .push({
-                            name: 'penilaian1.index',
-                        })
-                        .catch((err) => {
-                            validation.value = err.response.data
-                        })
-                })
+                    router.push({
+                        name: 'penilaian1.index'
+                    })
+                }).catch((err) => {
+                    validation.value = err.response.data
+                });
         }
         return {
-            penilaian1Form,
+            state,
+            inputPenilaian,
             validation,
             router,
             update
@@ -110,6 +138,3 @@ export default {
     },
 }
 </script>
-
-<style>
-</style>
