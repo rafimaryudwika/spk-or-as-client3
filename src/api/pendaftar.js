@@ -1,43 +1,25 @@
-import { APISettings } from '../config.js';
+import http from './../../http-common.js'
 
 export default {
-    index( ){
-        return fetch( APISettings.baseURL + '/pendaftar', {
-            method: 'GET',
-            headers: APISettings.headers
-        } )
-        .then( function( response ){
-            if( response.status != 200 ){
-                throw response.status;
-            }else{
-                return response.json();
-            }
-        });
+    index(params) {
+        return http.get('/pendaftar', {
+            params: params,
+        })
     },
 
-    show( id ){
-        return fetch( APISettings.baseURL + '/pendaftar/', {
-            method: 'GET',
-            headers: APISettings.headers
-        } )
-        .then( function( response ){
-            if( response.status != 200 ){
-                throw response.status;
-            }else{
-                return response.json();
-            }
-        });
+    show(id) {
+        return http.get('/pendaftar/' + id)
     },
 
-    update( id, data ){
-        
-    },
+    // update( id, data ){
+    //     return axios.put( 'https://music.com/api/v1/songs/'+id, data );
+    // },
 
-    create( data ){
+    // create( data ){
+    //     return axios.post( 'https://music.com/api/v1/songs', data );
+    // },
 
-    },
-
-    delete( id ){
-
-    }
+    // delete( id ){
+    //     return axios.delete( 'https://music.com/api/v1/songs/' + id )
+    // }
 }
