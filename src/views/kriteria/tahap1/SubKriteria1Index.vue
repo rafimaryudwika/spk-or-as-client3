@@ -10,7 +10,13 @@
                 <div class="overflow-y-auto sm:-mx-6 lg:-mx-0">
                     <div class="py-2 inline-clip sm:px-6 lg:px-4">
                         <div class="sm:rounded-lg">
-
+                            <div class="col-12">
+                                <router-link :to="{
+                                    name: 'subkriteria1.tambah',
+                                }" type="button"
+                                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                                    Tambah</router-link>
+                            </div>
 
                             <table class="min-w-full shadow-md ">
                                 <thead class="bg-gray-100 dark:bg-gray-700">
@@ -19,16 +25,16 @@
                                             class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
                                             Kode
                                         </th>
-                                        
-                                        <th  scope="col"
+
+                                        <th scope="col"
                                             class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
                                             Subkriteria
                                         </th>
-                                        <th  scope="col"
+                                        <th scope="col"
                                             class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
                                             Kriteria
                                         </th>
-                                        <th  scope="col"
+                                        <th scope="col"
                                             class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
                                             Bobot
                                         </th>
@@ -39,7 +45,7 @@
                                 </thead>
                                 <tbody>
                                     <!-- Product 1 -->
-                                    
+
                                     <tr v-for="sk in state.listSubKriteria" :key="sk.id_sk1"
                                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-600">
                                         <td
@@ -47,31 +53,31 @@
                                             {{ sk.id_sk1 }}
                                         </td>
                                         <td
-                                             class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                            class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             {{ sk.subkriteria }}
                                         </td>
-                                        
+
                                         <td
                                             class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
                                             {{ sk.kriteria }}
                                         </td>
-                                        
+
                                         <td
                                             class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
                                             {{ sk.bobot }}
                                         </td>
-                                         <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
+                                        <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
                                             <router-link :to="{
                                                 name: 'subkriteria1.edit',
                                                 params: {
                                                     id: sk.id_sk1,
                                                 },
-                                            }" 
+                                            }"
                                                 class="text-blue-600 hover:text-blue-900 dark:text-blue-500 dark:hover:underline">
                                                 Edit</router-link>
                                         </td>
-                                        </tr>
-                                    
+                                    </tr>
+
                                 </tbody>
                             </table>
                         </div>
@@ -95,15 +101,15 @@ export default {
         })
         onMounted(() => {
             subKriteria1API.index()
-            .then((response) => {
-                state.subkriteria = response.data.data
-                console.log(state.subkriteria)
-            }).catch((err) => {
-                
-            });
+                .then((response) => {
+                    state.subkriteria = response.data.data
+                    console.log(state.subkriteria)
+                }).catch((err) => {
+
+                });
         })
 
-         watchEffect(() => {
+        watchEffect(() => {
             for (let i = 0; i < state.subkriteria.length; i++) {
                 const outer = state.subkriteria[i];
                 if (outer.subkriteria) {
@@ -132,9 +138,9 @@ export default {
         })
 
         console.log(state.listSubKriteria)
-    return {
-        state
-    }
+        return {
+            state
+        }
     }
 }
 </script>

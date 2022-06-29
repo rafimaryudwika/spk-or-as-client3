@@ -46,7 +46,7 @@
                                     </tr>
                                     <tr>
                                         <template v-for="sub in state.subkriteria" :key="sub.id_sk1">
-                                            <th v-if="sub.subkriteria" colspan="3" scope="col"
+                                            <th v-if="sub.subkriteria" colspan="3" scope="col" 
                                                 class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
                                                 {{ sub.kode }}
                                             </th>

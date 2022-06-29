@@ -63,6 +63,11 @@ const routes = [
         component: () => import('../views/kriteria/tahap1/Kriteria1Index.vue'),
     },
     {
+        path: '/kriteria1/tambah',
+        name: 'kriteria1.tambah',
+        component: () => import('../views/kriteria/tahap1/Kriteria1Tambah.vue'),
+    },
+    {
         path: '/kriteria1/edit/:id',
         name: 'kriteria1.edit',
         component: () => import('../views/kriteria/tahap1/Kriteria1Edit.vue'),
@@ -74,10 +79,86 @@ const routes = [
             import('../views/kriteria/tahap1/SubKriteria1Index.vue'),
     },
     {
+        path: '/kriteria1/subkriteria/tambah',
+        name: 'subkriteria1.tambah',
+        component: () =>
+            import('../views/kriteria/tahap1/SubKriteria1Tambah.vue'),
+    },
+    {
         path: '/kriteria1/subkriteria/edit/:id',
         name: 'subkriteria1.edit',
         component: () =>
             import('../views/kriteria/tahap1/SubKriteria1Edit.vue'),
+    },
+    // Tahap 2
+    {
+        path: '/kriteria2',
+        name: 'kriteria2.index',
+        component: () => import('../views/kriteria/tahap2/Kriteria2Index.vue'),
+    },
+    {
+        path: '/kriteria2/tambah',
+        name: 'kriteria2.tambah',
+        component: () => import('../views/kriteria/tahap2/Kriteria2Tambah.vue'),
+    },
+    {
+        path: '/kriteria2/edit/:id',
+        name: 'kriteria2.edit',
+        component: () => import('../views/kriteria/tahap2/Kriteria2Edit.vue'),
+    },
+    {
+        path: '/kriteria2/subkriteria',
+        name: 'subkriteria2.index',
+        component: () =>
+            import('../views/kriteria/tahap2/SubKriteria2Index.vue'),
+    },
+    {
+        path: '/kriteria2/subkriteria/tambah',
+        name: 'subkriteria2.tambah',
+        component: () =>
+            import('../views/kriteria/tahap2/SubKriteria2Tambah.vue'),
+    },
+    {
+        path: '/kriteria2/subkriteria/edit/:id',
+        name: 'subkriteria2.edit',
+        component: () =>
+            import('../views/kriteria/tahap2/SubKriteria2Edit.vue'),
+    },
+    {
+        path: '/penilaian2',
+        name: 'penilaian2.index',
+        component: () =>
+            import('../views/penilaian/penilaian2/penilaian2-index.vue'),
+    },
+    // {
+    //     path: '/penilaian2/calculate',
+    //     name: 'penilaian2.calculate',
+    //     component: () =>
+    //         import('../views/penilaian/penilaian2/penilaian2-calculate.vue'),
+    // },
+    // {
+    //     path: '/penilaian2/calculate/:id',
+    //     name: 'penilaian2.evaluate',
+    //     component: () =>
+    //         import('../views/penilaian/penilaian1/penilaian2-evaluate.vue'),
+    // },
+    // {
+    //     path: '/penilaian2/kelulusan',
+    //     name: 'penilaian2.kelulusan',
+    //     component: () =>
+    //         import('../views/penilaian/penilaian1/penilaian2-kelulusan.vue'),
+    // },
+    // {
+    //     path: '/penilaian2/edit/:id',
+    //     name: 'penilaian2.edit',
+    //     component: () =>
+    //         import('../views/penilaian/penilaian2/penilaian2-edit.vue'),
+    // },
+    {
+        path: '/penilaian2/tambah/:id',
+        name: 'penilaian2.tambah',
+        component: () =>
+            import('../views/penilaian/penilaian2/penilaian2-tambah.vue'),
     },
 ]
 const router = createRouter({
