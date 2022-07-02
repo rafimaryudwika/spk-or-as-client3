@@ -56,7 +56,7 @@ export default {
 
         const route = useRoute()
         onMounted(() => {
-            http.get(`/penilaian1/show/${route.params.id}`)
+            http.get(`/penilaian1/show2/${route.params.id}`)
                 .then((response) => {
                     inputPenilaian.nim = response.data.data[0].nim
                     state.peserta = response.data.data[0]

@@ -50,8 +50,13 @@
                   </li>
                   <li>
                     <router-link :to="{
-                    name: 'penilaian1.index',
+                    name: 'penilaian1.peserta',
                 }" href="" class="flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg pl-11 group hover:bg-blue-700 dark:text-white dark:hover:bg-gray-700">Peserta</router-link>
+                  </li>
+                  <li>
+                      <router-link :to="{
+                    name: 'penilaian1.index',
+                }" href="#" class="flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg pl-11 group hover:bg-blue-700 dark:text-white dark:hover:bg-gray-700">Penilaian</router-link>
                   </li>
                   <li>
                      <router-link :to="{
@@ -83,7 +88,14 @@
                 }" href="" class="flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg pl-11 group hover:bg-blue-700 dark:text-white dark:hover:bg-gray-700">Subkriteria</router-link>
                   </li>
                   <li>
-                     <a href="#" class="flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg pl-11 group hover:bg-blue-700 dark:text-white dark:hover:bg-gray-700">Peserta</a>
+                     <router-link :to="{
+                    name: 'penilaian2.peserta',
+                }" href="#" class="flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg pl-11 group hover:bg-blue-700 dark:text-white dark:hover:bg-gray-700">Peserta</router-link>
+                  </li>
+                  <li>
+                     <router-link :to="{
+                    name: 'penilaian2.index',
+                }" href="#" class="flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg pl-11 group hover:bg-blue-700 dark:text-white dark:hover:bg-gray-700">Penilaian</router-link>
                   </li>
                   <li>
                      <a href="#" class="flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg pl-11 group hover:bg-blue-700 dark:text-white dark:hover:bg-gray-700">Kalkulasi</a>
@@ -108,6 +120,9 @@
                   </li>
                   <li>
                      <a href="#" class="flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg pl-11 group hover:bg-blue-700 dark:text-white dark:hover:bg-gray-700">Peserta</a>
+                  </li>
+                  <li>
+                     <a href="#" class="flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg pl-11 group hover:bg-blue-700 dark:text-white dark:hover:bg-gray-700">Penilaian</a>
                   </li>
                   <li>
                      <a href="#" class="flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg pl-11 group hover:bg-blue-700 dark:text-white dark:hover:bg-gray-700">Kalkulasi</a>

@@ -17,10 +17,16 @@ const routes = [
         component: () => import('../views/pendaftar/pendaftar-view.vue'),
     },
     {
-        path: '/penilaian1',
+        path: '/penilaian1/penilaian',
         name: 'penilaian1.index',
         component: () =>
             import('../views/penilaian/penilaian1/penilaian1-index.vue'),
+    },
+    {
+        path: '/penilaian1',
+        name: 'penilaian1.peserta',
+        component: () =>
+            import('../views/penilaian/penilaian1/penilaian1-peserta.vue'),
     },
     {
         path: '/penilaian1/calculate',
@@ -97,6 +103,11 @@ const routes = [
         component: () => import('../views/kriteria/tahap2/Kriteria2Index.vue'),
     },
     {
+        path: '/kriteria2',
+        name: 'kriteria2.index',
+        component: () => import('../views/kriteria/tahap2/Kriteria2Index.vue'),
+    },
+    {
         path: '/kriteria2/tambah',
         name: 'kriteria2.tambah',
         component: () => import('../views/kriteria/tahap2/Kriteria2Tambah.vue'),
@@ -125,10 +136,16 @@ const routes = [
             import('../views/kriteria/tahap2/SubKriteria2Edit.vue'),
     },
     {
-        path: '/penilaian2',
+        path: '/penilaian2/penilaian',
         name: 'penilaian2.index',
         component: () =>
             import('../views/penilaian/penilaian2/penilaian2-index.vue'),
+    },
+    {
+        path: '/penilaian2',
+        name: 'penilaian2.peserta',
+        component: () =>
+            import('../views/penilaian/penilaian2/penilaian2-peserta.vue'),
     },
     // {
     //     path: '/penilaian2/calculate',
