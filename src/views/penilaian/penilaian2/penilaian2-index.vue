@@ -98,7 +98,7 @@
                                             </template>
                                             <template v-else>
                                                 <router-link :to="{
-                                                    name: 'penilaian1.edit',
+                                                    name: 'penilaian2.edit',
                                                     params: {
                                                         id: peserta1.nim,
                                                     },
