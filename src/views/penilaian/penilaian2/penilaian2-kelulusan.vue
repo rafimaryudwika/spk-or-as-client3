@@ -60,8 +60,8 @@
 </template>
 
 <script>
-import { onMounted, ref, reactive, computed, watchEffect } from 'vue'
-import penilaian1API from "./../../../api/listPeserta/tahap1/peserta";
+import { onMounted, reactive, computed } from 'vue'
+import penilaian1API from "./../../../api/listPeserta/tahap2/peserta";
 
 export default {
     components: {},

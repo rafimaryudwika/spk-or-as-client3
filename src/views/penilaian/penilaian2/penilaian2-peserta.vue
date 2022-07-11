@@ -1,15 +1,23 @@
 <template>
-    <div class="flex-1">
-        <div class="col-12">
-            <h1 class="px-6 py-6 mb-6 text-3xl font-extrabold">
-                Data Peserta Tahap 1
+    <div class="flex-1 bg-white dark:bg-gray-800">
+        <div class="col-6">
+            <h1 class="px-6 py-6 text-3xl font-extrabold dark:text-gray-200">
+                Data Peserta Tahap 2
             </h1>
         </div>
         <div class="col-12">
             <div class="flex-1">
                 <div class="overflow-y-auto sm:-mx-6 lg:-mx-0">
                     <div class="py-2 inline-clip sm:px-6 lg:px-4">
-
+                        <div class="col-12">
+                            <button @click="getData"
+                                class="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
+                                <span
+                                    class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                                    Import Data
+                                </span>
+                            </button>
+                        </div>
                         <div class="sm:rounded-lg ">
                             <table class="min-w-full shadow-md">
                                 <thead class="bg-gray-100 dark:bg-gray-700">
@@ -95,9 +103,8 @@
 </template>
 
 <script>
-import { onMounted, reactive, computed,} from 'vue'
+import { onMounted, reactive, computed, ref } from 'vue'
 import penilaian1API from "./../../../api/listPeserta/tahap2/peserta";
-
 
 export default {
     components: {},
@@ -152,10 +159,21 @@ export default {
                 }
             })
         })
+        const validation = ref([]);
+        function getData() {
+            penilaian1API.import()
+                .then(() => {
+                    window.location.reload();
+                }).catch((err) => {
+                    validation.value = err.response.data
+                });
+        }
         return {
             state,
             sorting,
-            sortedData
+            sortedData,
+            validation,
+            getData
         }
     },
 }

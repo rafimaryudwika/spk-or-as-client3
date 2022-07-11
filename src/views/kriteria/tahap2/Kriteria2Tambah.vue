@@ -1,7 +1,7 @@
 <template>
-    <div class="flex-1">
-        <div class="col-12">
-            <h1 class="px-6 py-6 mb-6 text-3xl font-extrabold">
+    <div class="flex-1 bg-white dark:bg-gray-800">
+        <div class="col-6">
+            <h1 class="px-6 py-6 text-3xl font-extrabold dark:text-gray-200">
                 Tambah Kriteria
             </h1>
         </div>
@@ -13,21 +13,24 @@
                             <form @submit.prevent="store()">
                                 <div class="mb-6">
                                     <label for="nama"
-                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Nama Kriteria</label>
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Nama
+                                        Kriteria</label>
                                     <input type="text" id="nama"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         required v-model="inputKriteria.kriteria" />
                                 </div>
                                 <div class="mb-6">
                                     <label for="kode"
-                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Kode Kriteria</label>
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Kode
+                                        Kriteria</label>
                                     <input type="text" id="kode"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         required v-model="inputKriteria.kode" />
                                 </div>
                                 <div class="mb-6">
                                     <label for="bobot"
-                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Bobot Kriteria</label>
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Bobot
+                                        Kriteria</label>
                                     <input type="text" id="bobot"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         required v-model="inputKriteria.bobot" />

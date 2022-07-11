@@ -21,6 +21,10 @@ export default {
         return http.get('/penilaian1/show/' + id)
     },
 
+    import() {
+        return http.post('/penilaian1/import')
+    },
+
     update(id, data) {
         return http.put('/penilaian1/' + id, data)
     },

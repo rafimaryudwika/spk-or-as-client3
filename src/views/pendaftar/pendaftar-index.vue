@@ -1,7 +1,7 @@
 <template>
-    <div class="flex-1">
+    <div class="flex-1 bg-white dark:bg-gray-800">
         <div class="col-6">
-            <h1 class="px-6 py-6 text-3xl font-extrabold">
+            <h1 class="px-6 py-6 text-3xl font-extrabold dark:text-gray-200">
                 Data Pendaftar
             </h1>
         </div>
@@ -87,7 +87,7 @@
                                 </tbody>
                             </table>
                             <br>
-                            <nav aria-label="Page navigation example">
+                            <nav aria-label="Page navigation">
                                 <ul class="inline-flex items-center -space-x-px">
                                     <li>
                                         <a href="#" @click="prevPage"
@@ -102,9 +102,10 @@
                                         </a>
                                     </li>
                                     <li v-for="pages in state.page" :key="pages.name">
-                                        <a href="#" @click="clickPage(pages)"
-                                            class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                                            {{ pages }}</a>
+                                        <a href="#" @click="clickPage(pages.name)"
+                                            :class="[isPageActive(pages.name), 'px-3', 'py-2', 'leading-tight', 'text-gray-500', 'bg-white', 'border', 'border-gray-300', 'hover:bg-gray-100', 'hover:text-gray-700', 'dark:bg-gray-800', 'dark:border-gray-700', 'dark:text-gray-400', 'dark:hover:bg-gray-700', 'dark:hover:text-white']"
+                                            :disabled="pages.isDisabled">
+                                            {{ pages.name }}</a>
                                     </li>
 
                                     <li>
@@ -159,23 +160,23 @@ export default {
         })
 
         watchEffect(() => {
-            let pageCount = parseInt(state.pendaftar.length / state.pageSize)
-            if (state.pendaftar.length % state.pageSize) {
-                pageCount++;
-            }
+            let pageCount = Math.ceil(state.pendaftar.length / state.pageSize)
+            state.page = []
             for (let i = 1; i <= pageCount; i++) {
-                state.page.push(i)
+                state.page.push({
+                    name: i,
+                    isDisabled: i == state.currentPage
+                })
             }
+            console.log(state.page)
         })
 
-        console.log(state.page)
 
         function sorting(s) {
             if (s === state.currentSort) {
                 state.currentSortDir = state.currentSortDir === 'asc' ? 'desc' : 'asc'
             }
             state.currentSort = s
-
         }
 
         function nextPage() {
@@ -188,6 +189,10 @@ export default {
 
         function clickPage(page) {
             state.currentPage = page;
+        }
+
+        function isPageActive(page) {
+            if (state.currentPage === page) return "z-10 py-2 px-3 leading-tight text-blue-600 bg-blue-50 border border-blue-300 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
         }
 
         const sortedData = computed(() => {
@@ -205,11 +210,6 @@ export default {
             });
         })
 
-        // const pages = computed(( => {
-        //     const range = []
-
-        //     for ()
-        // }))
 
         return {
             state,
@@ -217,7 +217,8 @@ export default {
             sortedData,
             nextPage,
             prevPage,
-            clickPage
+            clickPage,
+            isPageActive
         }
     },
 }

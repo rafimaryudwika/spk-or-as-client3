@@ -11,12 +11,21 @@
                     <div class="py-2 inline-clip sm:px-6 lg:px-4">
                         <div class="sm:rounded-lg">
                             <form @submit.prevent="update()">
+
                                 <div class="mb-6">
                                     <label for="nim"
                                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">NIM</label>
-                                    <input type="nim" id="disabled-input-2"
+                                    <input type="text" id="disabled-input-2"
                                         class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        disabled readonly v-model="inputPenilaian.nim" />
+                                        disabled readonly v-model="outputPenilaian.nim" />
+                                </div>
+                                <div class="mb-6">
+                                    <label for="nama"
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Nama
+                                        Peserta</label>
+                                    <input type="text" id="disabled-input-2"
+                                        class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        disabled readonly v-model="outputPenilaian.nama" />
                                 </div>
                                 <div v-for="(sk, index) in state.listSubKriteria" :key="index" class="mb-6">
                                     <label for="sk.k_sc"
@@ -24,8 +33,18 @@
                                                 sk.kriteria
                                         }} </label>
                                     <input type="text" id="sk.k_sc"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        required v-model="inputPenilaian[sk.k_sc]" />
+                                        class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        disabled readonly v-model="outputPenilaian[sk.k_sc]" />
+                                </div>
+                                <div class="mb-6">
+                                    <label for="lulus"
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Kelulusan
+                                        Peserta</label>
+                                    <select id="lulus" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500
+                                    required " v-model="inputLulus.lulus">
+                                        <option value="0">TIDAK LULUS</option>
+                                        <option value="1">LULUS</option>
+                                    </select>
                                 </div>
                                 <button type="submit"
                                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -44,6 +63,8 @@
 import { onMounted, reactive, ref, watchEffect, computed } from 'vue'
 import http from './../../../http-common.js'
 import { useRouter, useRoute } from 'vue-router'
+import penilaian1API from "./../../../api/listPeserta/tahap2/peserta";
+
 
 export default {
     components: {},
@@ -53,20 +74,24 @@ export default {
             peserta: [],
             listSubKriteria: []
         })
-        let inputPenilaian = reactive({})
+        let inputLulus = reactive({
+            lulus: ''
+        })
+        let outputPenilaian = reactive({
+        })
         watchEffect(() => {
-            //transpose dari table sub-kriteria menjadi object untuk input data
-            inputPenilaian['nim'] = "";
+            outputPenilaian['nim'] = "";
+            outputPenilaian['nama'] = "";
             for (let i = 0; i < state.subkriteria.length; i++) {
                 const outer = state.subkriteria[i];
                 if (outer.subkriteria) {
                     for (let j = 0; j < outer.subkriteria.length; j++) {
                         const inner = outer.subkriteria[j];
                         const key = `${outer.k_sc}-${inner.sk_sc}`;
-                        inputPenilaian[key] = "";
+                        outputPenilaian[key] = "";
                     }
                 } else {
-                    inputPenilaian[outer.k_sc] = "";
+                    outputPenilaian[outer.k_sc] = "";
                 }
             }
             //transpose dari table sub-kriteria menjadi list untuk perulangan (baik untuk input maupun v-model)
@@ -89,40 +114,47 @@ export default {
                     })
                 }
             }
+            console.log(state.listSubKriteria)
         })
+        console.log(outputPenilaian)
 
         const route = useRoute()
         onMounted(() => {
-            http.get('/subkriteria1')
+            http.get('/subkriteria2')
                 .then((response) => {
                     state.subkriteria = response.data.data
+
                 })
-            http.get(`/penilaian1/show/${route.params.id}`)
+            http.get(`/penilaian2/show/${route.params.id}`)
                 .then((response) => {
-                    inputPenilaian.nim = response.data.data[0].nim
+
+                    outputPenilaian.nim = response.data.data[0].nim
+                    outputPenilaian.nama = response.data.data[0].nama
                     for (let i = 0; i < state.subkriteria.length; i++) {
                         const outer = state.subkriteria[i];
                         if (outer.subkriteria) {
                             for (let j = 0; j < outer.subkriteria.length; j++) {
                                 const inner = outer.subkriteria[j];
                                 let props1 = `${outer.k_sc}-${inner.sk_sc}`;
-                                inputPenilaian[props1] = `${response.data.data[0].nilai[outer.k_sc][inner.sk_sc]}`
+                                outputPenilaian[props1] = `${response.data.data[0].nilai[outer.k_sc][inner.sk_sc]}`
                             }
                         } else {
                             let props2 = `${outer.k_sc}`;
-                            inputPenilaian[props2] = `${response.data.data[0].nilai[props2]}`
+                            outputPenilaian[props2] = `${response.data.data[0].nilai[props2]}`
                         }
                     }
+                    state.peserta = response.data.data
+                    inputLulus.lulus = response.data.data.lulus
                 })
         })
 
         const validation = ref([]);
         const router = useRouter();
         function update() {
-            http.put(`/penilaian1/${route.params.id}`, inputPenilaian)
+            penilaian1API.lulus(route.params.id, inputLulus)
                 .then(() => {
                     router.push({
-                        name: 'penilaian1.index'
+                        name: 'penilaian2.calculate'
                     })
                 }).catch((err) => {
                     validation.value = err.response.data
@@ -130,7 +162,8 @@ export default {
         }
         return {
             state,
-            inputPenilaian,
+            inputLulus,
+            outputPenilaian,
             validation,
             router,
             update

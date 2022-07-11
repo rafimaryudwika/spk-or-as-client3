@@ -1,7 +1,7 @@
 <template>
-    <div class="flex-1">
-        <div class="col-12">
-            <h1 class="px-6 py-6 mb-6 text-3xl font-extrabold">
+    <div class="flex-1 bg-white dark:bg-gray-800">
+        <div class="col-6">
+            <h1 class="px-6 py-6 text-3xl font-extrabold dark:text-gray-200">
                 Data Peserta & Penilaian
             </h1>
         </div>
@@ -151,12 +151,12 @@ export default {
 
         onMounted(() => {
             subKriteria2API.index()
-            .then((response) => {
-                state.subkriteria = response.data.data
-                console.log(state.subkriteria)
-            }).catch((err) => {
-                console.log(err.response.data)
-            });
+                .then((response) => {
+                    state.subkriteria = response.data.data
+                    console.log(state.subkriteria)
+                }).catch((err) => {
+                    console.log(err.response.data)
+                });
             kriteria2API.index()
                 .then((response) => {
                     state.kriteria = response.data.data

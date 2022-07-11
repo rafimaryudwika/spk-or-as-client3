@@ -21,7 +21,7 @@ export default {
         return http.get('/penilaian2/show/' + id)
     },
 
-    create() {
+    import() {
         return http.post('/penilaian2/import')
     },
 

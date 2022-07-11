@@ -1,7 +1,7 @@
 <template>
-    <div class="flex-1">
-        <div class="col-12">
-            <h1 class="px-6 py-6 mb-6 text-3xl font-extrabold">
+    <div class="flex-1 bg-white dark:bg-gray-800">
+        <div class="col-6">
+            <h1 class="px-6 py-6 text-3xl font-extrabold dark:text-gray-200">
                 Edit Data Penilaian Peserta
             </h1>
         </div>
@@ -11,7 +11,7 @@
                     <div class="py-2 inline-clip sm:px-6 lg:px-4">
                         <div class="sm:rounded-lg">
                             <form @submit.prevent="update()">
-                            
+
                                 <div class="mb-6">
                                     <label for="nim"
                                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">NIM</label>
@@ -21,7 +21,8 @@
                                 </div>
                                 <div class="mb-6">
                                     <label for="nama"
-                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Nama Peserta</label>
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Nama
+                                        Peserta</label>
                                     <input type="text" id="disabled-input-2"
                                         class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         disabled readonly v-model="outputPenilaian.nama" />
@@ -33,17 +34,17 @@
                                         }} </label>
                                     <input type="text" id="sk.k_sc"
                                         class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        disabled readonly v-model="outputPenilaian[sk.k_sc]"/>
+                                        disabled readonly v-model="outputPenilaian[sk.k_sc]" />
                                 </div>
                                 <div class="mb-6">
-                                <label for="lulus"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Kelulusan Peserta</label>
-                                <select id="lulus"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500
+                                    <label for="lulus"
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Kelulusan
+                                        Peserta</label>
+                                    <select id="lulus" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500
                                     required " v-model="inputLulus.lulus">
-                                    <option value="0">TIDAK LULUS</option>
-                                    <option value="1">LULUS</option>
-                                </select>
+                                        <option value="0">TIDAK LULUS</option>
+                                        <option value="1">LULUS</option>
+                                    </select>
                                 </div>
                                 <button type="submit"
                                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -74,7 +75,7 @@ export default {
             listSubKriteria: []
         })
         let inputLulus = reactive({
-            lulus:  ''
+            lulus: ''
         })
         let outputPenilaian = reactive({
         })
@@ -122,13 +123,13 @@ export default {
             http.get('/subkriteria1')
                 .then((response) => {
                     state.subkriteria = response.data.data
-                    
+
                 })
             http.get(`/penilaian1/show/${route.params.id}`)
                 .then((response) => {
-                     
-                     outputPenilaian.nim = response.data.data[0].nim
-                     outputPenilaian.nama = response.data.data[0].nama
+
+                    outputPenilaian.nim = response.data.data[0].nim
+                    outputPenilaian.nama = response.data.data[0].nama
                     for (let i = 0; i < state.subkriteria.length; i++) {
                         const outer = state.subkriteria[i];
                         if (outer.subkriteria) {
@@ -141,9 +142,9 @@ export default {
                             let props2 = `${outer.k_sc}`;
                             outputPenilaian[props2] = `${response.data.data[0].nilai[props2]}`
                         }
-                    }     
+                    }
                     state.peserta = response.data.data
-                    inputLulus.lulus = response.data.data.lulus              
+                    inputLulus.lulus = response.data.data.lulus
                 })
         })
 

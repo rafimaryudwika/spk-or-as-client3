@@ -1,7 +1,7 @@
 <template>
-    <div class="flex-1">
+    <div class="flex-1 bg-white dark:bg-gray-800">
         <div class="col-6">
-            <h1 class="px-6 py-6 text-3xl font-extrabold">
+            <h1 class="px-6 py-6 text-3xl font-extrabold dark:text-gray-200">
                 Data Subkriteria Tahap 1
             </h1>
         </div>

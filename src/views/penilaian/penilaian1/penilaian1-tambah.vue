@@ -1,7 +1,7 @@
 <template>
-    <div class="flex-1">
-        <div class="col-12">
-            <h1 class="px-6 py-6 mb-6 text-3xl font-extrabold">
+    <div class="flex-1 bg-white dark:bg-gray-800">
+        <div class="col-6">
+            <h1 class="px-6 py-6 text-3xl font-extrabold dark:text-gray-200">
                 Data Penilaian
             </h1>
         </div>
@@ -21,7 +21,7 @@
                                 <div v-for="(sk, index) in state.listSubKriteria" :key="index" class="mb-6">
                                     <label for="sk.k_sc"
                                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{
-                                        sk.kriteria
+                                                sk.kriteria
                                         }}</label>
                                     <input type="text" id="sk.k_sc"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"

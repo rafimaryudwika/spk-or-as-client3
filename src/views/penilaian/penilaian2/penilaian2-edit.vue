@@ -2,7 +2,7 @@
     <div class="flex-1 bg-white dark:bg-gray-800">
         <div class="col-6">
             <h1 class="px-6 py-6 text-3xl font-extrabold dark:text-gray-200">
-                Data Penilaian
+                Edit Data Penilaian Peserta
             </h1>
         </div>
         <div class="col-12">
@@ -10,7 +10,7 @@
                 <div class="overflow-y-auto sm:-mx-6 lg:-mx-0">
                     <div class="py-2 inline-clip sm:px-6 lg:px-4">
                         <div class="sm:rounded-lg">
-                            <form @submit.prevent="store()">
+                            <form @submit.prevent="update()">
                                 <div class="mb-6">
                                     <label for="nim"
                                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">NIM</label>
@@ -22,7 +22,7 @@
                                     <label for="sk.k_sc"
                                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{
                                                 sk.kriteria
-                                        }}</label>
+                                        }} </label>
                                     <input type="text" id="sk.k_sc"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         required v-model="inputPenilaian[sk.k_sc]" />
@@ -53,24 +53,9 @@ export default {
             peserta: [],
             listSubKriteria: []
         })
-
-        const route = useRoute()
-        onMounted(() => {
-            http.get(`/penilaian2/show2/${route.params.id}`)
-                .then((response) => {
-                    inputPenilaian.nim = response.data.data[0].nim
-                    state.peserta = response.data.data[0]
-                    // console.log(state.peserta)
-                })
-            http.get('/subkriteria2')
-                .then((response) => {
-                    state.subkriteria = response.data.data
-                    // console.log(state.subkriteria)
-                })
-        })
-
         let inputPenilaian = reactive({})
         watchEffect(() => {
+            //transpose dari table sub-kriteria menjadi object untuk input data
             inputPenilaian['nim'] = "";
             for (let i = 0; i < state.subkriteria.length; i++) {
                 const outer = state.subkriteria[i];
@@ -84,7 +69,7 @@ export default {
                     inputPenilaian[outer.k_sc] = "";
                 }
             }
-
+            //transpose dari table sub-kriteria menjadi list untuk perulangan (baik untuk input maupun v-model)
             for (let i = 0; i < state.subkriteria.length; i++) {
                 const outer = state.subkriteria[i];
                 if (outer.subkriteria) {
@@ -105,12 +90,36 @@ export default {
                 }
             }
         })
-        // console.log(state.listSubKriteria)
-        // console.log(inputPenilaian)
+
+        const route = useRoute()
+        onMounted(() => {
+            http.get('/subkriteria2')
+                .then((response) => {
+                    state.subkriteria = response.data.data
+                })
+            http.get(`/penilaian2/show/${route.params.id}`)
+                .then((response) => {
+                    inputPenilaian.nim = response.data.data[0].nim
+                    for (let i = 0; i < state.subkriteria.length; i++) {
+                        const outer = state.subkriteria[i];
+                        if (outer.subkriteria) {
+                            for (let j = 0; j < outer.subkriteria.length; j++) {
+                                const inner = outer.subkriteria[j];
+                                let props1 = `${outer.k_sc}-${inner.sk_sc}`;
+                                inputPenilaian[props1] = `${response.data.data[0].nilai[outer.k_sc][inner.sk_sc]}`
+                            }
+                        } else {
+                            let props2 = `${outer.k_sc}`;
+                            inputPenilaian[props2] = `${response.data.data[0].nilai[props2]}`
+                        }
+                    }
+                })
+        })
+
         const validation = ref([]);
         const router = useRouter();
-        function store() {
-            http.post('/penilaian2', inputPenilaian)
+        function update() {
+            http.put(`/penilaian2/${route.params.id}`, inputPenilaian)
                 .then(() => {
                     router.push({
                         name: 'penilaian2.index'
@@ -124,7 +133,7 @@ export default {
             inputPenilaian,
             validation,
             router,
-            store
+            update
         }
     },
 }
