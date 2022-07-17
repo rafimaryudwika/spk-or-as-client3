@@ -2,7 +2,7 @@
     <div class="flex-1 bg-white dark:bg-gray-800">
         <div class="col-6">
             <h1 class="px-6 py-6 text-3xl font-extrabold dark:text-gray-200">
-                Data Kelulusan Peserta Tahap 1
+                Data Kelulusan Peserta Tahap 2
             </h1>
         </div>
         <div class="col-12">

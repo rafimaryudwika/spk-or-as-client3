@@ -55,62 +55,49 @@
     </div>
 </template>
 
-<script>
-import { onMounted, reactive, ref, watchEffect, computed } from 'vue'
-import subKriteria2API from "./../../../api/listKriteria/tahap2/subkriteria2";
+<script setup>
+import { onMounted, reactive, ref } from 'vue'
+import subKriteriaAPI from "./../../../api/listKriteria/tahap2/subkriteria2";
 import { useRouter, useRoute } from 'vue-router'
 
-export default {
-    components: {},
-    setup() {
-        const state = reactive({
-            kriteria: [],
-        })
-        let inputSubKriteria = reactive({
-            sub_kriteria: '',
-            kode: '',
-            bobot: ''
-        })
-        let outputSubKriteria = reactive({
-            kriteria: '',
-        })
+const state = reactive({
+    kriteria: [],
+})
+let inputSubKriteria = reactive({
+    sub_kriteria: '',
+    kode: '',
+    bobot: ''
+})
+let outputSubKriteria = reactive({
+    kriteria: '',
+})
 
-        const route = useRoute()
-        onMounted(() => {
-            subKriteria2API.show(route.params.id)
-                .then((response) => {
-                    state.kriteria = response.data.data
-                    console.log(state.kriteria)
+const route = useRoute()
+onMounted(() => {
+    subKriteriaAPI.show(route.params.id)
+        .then((response) => {
+            state.kriteria = response.data.data
+            console.log(state.kriteria)
+            inputSubKriteria.sub_kriteria = response.data.data.sub_kriteria
+            inputSubKriteria.kode = response.data.data.kode
+            inputSubKriteria.bobot = response.data.data.bobot
+            outputSubKriteria.kriteria = response.data.data.kriteria_tahap2.kriteria
+        }).catch((err) => {
 
-                    inputSubKriteria.sub_kriteria = response.data.data.sub_kriteria
-                    inputSubKriteria.kode = response.data.data.kode
-                    inputSubKriteria.bobot = response.data.data.bobot
-                    outputSubKriteria.kriteria = response.data.data.kriteria_tahap2.kriteria
-                }).catch((err) => {
+        });
+})
 
-                });
-        })
-
-        const validation = ref([]);
-        const router = useRouter();
-        function update() {
-            subKriteria2API.update(route.params.id, inputSubKriteria)
-                .then(() => {
-                    router.push({
-                        name: 'subkriteria2.index'
-                    })
-                }).catch((err) => {
-                    validation.value = err.response.data
-                });
-        }
-        return {
-            state,
-            outputSubKriteria,
-            inputSubKriteria,
-            validation,
-            router,
-            update
-        }
-    },
+const validation = ref([]);
+const router = useRouter();
+function update() {
+    subKriteriaAPI.update(route.params.id, inputSubKriteria)
+        .then(() => {
+            router.push({
+                name: 'subkriteria2.index'
+            })
+        }).catch((err) => {
+            validation.value = err.response.data
+        });
 }
+
 </script>

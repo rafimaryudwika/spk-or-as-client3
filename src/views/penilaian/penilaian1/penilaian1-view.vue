@@ -191,31 +191,24 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import { reactive, onMounted } from 'vue'
 import http from "./../../../http-common";
 import { useRouter, useRoute } from 'vue-router'
-export default {
-    setup() {
-        const state = reactive({
-            pendaftar: [],
-        })
-        const route = useRoute()
-        onMounted(() => {
-            http
-                .get(`/penilaian1/show2/${route.params.id}`)
-                .then((response) => {
-                    state.pendaftar = response.data.data[0]
-                    console.log(state.pendaftar)
 
-                })
+const state = reactive({
+    pendaftar: [],
+})
+const route = useRoute()
+onMounted(() => {
+    http
+        .get(`/penilaian1/show2/${route.params.id}`)
+        .then((response) => {
+            state.pendaftar = response.data.data[0]
+            console.log(state.pendaftar)
+
         })
-        return {
-            state,
-            route
-        }
-    }
-}
+})
 </script>
 
 <style>

@@ -48,42 +48,27 @@
     </div>
 </template>
 
-<script>
-import { onMounted, reactive, ref, watchEffect, computed } from 'vue'
-import kriteria2API from "./../../../api/listKriteria/tahap2/kriteria2";
-import { useRouter, useRoute } from 'vue-router'
+<script setup>
+import { reactive, ref } from 'vue'
+import kriteriaAPI from "./../../../api/listKriteria/tahap2/kriteria2";
+import { useRouter } from 'vue-router'
 
-export default {
-    components: {},
-    setup() {
-        const state = reactive({
-            kriteria: [],
-        })
-        let inputKriteria = reactive({
-            kriteria: '',
-            kode: '',
-            bobot: ''
-        })
-        
-        const validation = ref([]);
-        const router = useRouter();
-        function store() {
-            kriteria2API.create(inputKriteria)
-                .then(() => {
-                    router.push({
-                        name: 'kriteria2.index'
-                    })
-                }).catch((err) => {
-                    validation.value = err.response.data
-                });
-        }
-        return {
-            state,
-            inputKriteria,
-            validation,
-            router,
-            store
-        }
-    },
+let inputKriteria = reactive({
+    kriteria: '',
+    kode: '',
+    bobot: ''
+})
+
+const validation = ref([]);
+const router = useRouter();
+function store() {
+    kriteriaAPI.create(inputKriteria)
+        .then(() => {
+            router.push({
+                name: 'kriteria2.index'
+            })
+        }).catch((err) => {
+            validation.value = err.response.data
+        });
 }
 </script>

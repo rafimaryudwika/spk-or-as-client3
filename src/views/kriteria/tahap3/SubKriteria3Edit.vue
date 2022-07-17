@@ -2,7 +2,7 @@
     <div class="flex-1 bg-white dark:bg-gray-800">
         <div class="col-6">
             <h1 class="px-6 py-6 text-3xl font-extrabold dark:text-gray-200">
-                Tambah Sub-Kriteria
+                Edit Data Sub-Kriteria
             </h1>
         </div>
         <div class="col-12">
@@ -10,30 +10,27 @@
                 <div class="overflow-y-auto sm:-mx-6 lg:-mx-0">
                     <div class="py-2 inline-clip sm:px-6 lg:px-4">
                         <div class="sm:rounded-lg">
-                            <form @submit.prevent="store()">
+                            <form @submit.prevent="update()">
                                 <div class="mb-6">
-                                    <label for="kriteria"
-                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Nama
-                                        Kriteria</label>
-                                    <select id="kriteria" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500
-                                    required " v-model="inputSubKriteria.id_k2">
-                                        <option v-for="krit in state.kriteria" :key="krit.id_k2" :value="krit.id_k2">{{
-                                                krit.kriteria
-                                        }}</option>
-                                    </select>
+                                    <label for="nim"
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Kriteria</label>
+                                    <input type="nim" id="disabled-input-2"
+                                        class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        disabled readonly v-model="outputSubKriteria.kriteria" />
                                 </div>
                                 <div class="mb-6">
-                                    <label for="subkriteria"
+                                    <label for="nama"
                                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Nama
-                                        Sub-kriteria</label>
-                                    <input type="text" id="subkriteria"
+                                        Sub-Kriteria</label>
+                                    <input type="text" id="nama"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         required v-model="inputSubKriteria.sub_kriteria" />
                                 </div>
                                 <div class="mb-6">
                                     <label for="kode"
-                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Kode</label>
-                                    <input type="text" id="subkriteria"
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Kode
+                                        Sub-Kriteria</label>
+                                    <input type="text" id="kode"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         required v-model="inputSubKriteria.kode" />
                                 </div>
@@ -59,25 +56,33 @@
 </template>
 
 <script setup>
-import { onMounted, reactive, ref, watchEffect, computed } from 'vue'
-import kriteria2API from "./../../../api/listKriteria/tahap2/kriteria2";
-import subKriteriaAPI from "./../../../api/listKriteria/tahap2/subkriteria2";
+import { onMounted, reactive, ref } from 'vue'
+import subKriteriaAPI from "./../../../api/listKriteria/tahap3/subkriteria3";
 import { useRouter, useRoute } from 'vue-router'
 
 const state = reactive({
     kriteria: [],
 })
 let inputSubKriteria = reactive({
-    id_k2: '',
     sub_kriteria: '',
     kode: '',
     bobot: ''
 })
+let outputSubKriteria = reactive({
+    kriteria: '',
+})
+
+const route = useRoute()
 onMounted(() => {
-    kriteria2API.index()
+    subKriteriaAPI.show(route.params.id)
         .then((response) => {
             state.kriteria = response.data.data
             console.log(state.kriteria)
+
+            inputSubKriteria.sub_kriteria = response.data.data.sub_kriteria
+            inputSubKriteria.kode = response.data.data.kode
+            inputSubKriteria.bobot = response.data.data.bobot
+            outputSubKriteria.kriteria = response.data.data.kriteria_tahap2.kriteria
         }).catch((err) => {
 
         });
@@ -85,14 +90,15 @@ onMounted(() => {
 
 const validation = ref([]);
 const router = useRouter();
-function store() {
-    subKriteriaAPI.create(inputSubKriteria)
+function update() {
+    subKriteriaAPI.update(route.params.id, inputSubKriteria)
         .then(() => {
             router.push({
-                name: 'subkriteria2.index'
+                name: 'subkriteria3.index'
             })
         }).catch((err) => {
             validation.value = err.response.data
         });
 }
+
 </script>

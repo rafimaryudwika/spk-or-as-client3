@@ -40,92 +40,81 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import { onMounted, reactive, ref, watchEffect, computed } from 'vue'
 import http from './../../../http-common.js'
 import { useRouter, useRoute } from 'vue-router'
 
-export default {
-    components: {},
-    setup() {
-        const state = reactive({
-            subkriteria: [],
-            peserta: [],
-            listSubKriteria: []
-        })
+const state = reactive({
+    subkriteria: [],
+    peserta: [],
+    listSubKriteria: []
+})
 
-        const route = useRoute()
-        onMounted(() => {
-            http.get(`/penilaian2/show2/${route.params.id}`)
-                .then((response) => {
-                    inputPenilaian.nim = response.data.data[0].nim
-                    state.peserta = response.data.data[0]
-                    // console.log(state.peserta)
-                })
-            http.get('/subkriteria2')
-                .then((response) => {
-                    state.subkriteria = response.data.data
-                    // console.log(state.subkriteria)
-                })
+const route = useRoute()
+onMounted(() => {
+    http.get(`/penilaian2/show2/${route.params.id}`)
+        .then((response) => {
+            inputPenilaian.nim = response.data.data[0].nim
+            state.peserta = response.data.data[0]
+            // console.log(state.peserta)
         })
+    http.get('/subkriteria2')
+        .then((response) => {
+            state.subkriteria = response.data.data
+            // console.log(state.subkriteria)
+        })
+})
 
-        let inputPenilaian = reactive({})
-        watchEffect(() => {
-            inputPenilaian['nim'] = "";
-            for (let i = 0; i < state.subkriteria.length; i++) {
-                const outer = state.subkriteria[i];
-                if (outer.subkriteria) {
-                    for (let j = 0; j < outer.subkriteria.length; j++) {
-                        const inner = outer.subkriteria[j];
-                        const key = `${outer.k_sc}-${inner.sk_sc}`;
-                        inputPenilaian[key] = "";
-                    }
-                } else {
-                    inputPenilaian[outer.k_sc] = "";
-                }
+let inputPenilaian = reactive({})
+watchEffect(() => {
+    inputPenilaian['nim'] = "";
+    for (let i = 0; i < state.subkriteria.length; i++) {
+        const outer = state.subkriteria[i];
+        if (outer.subkriteria) {
+            for (let j = 0; j < outer.subkriteria.length; j++) {
+                const inner = outer.subkriteria[j];
+                const key = `${outer.k_sc}-${inner.sk_sc}`;
+                inputPenilaian[key] = "";
             }
+        } else {
+            inputPenilaian[outer.k_sc] = "";
+        }
+    }
 
-            for (let i = 0; i < state.subkriteria.length; i++) {
-                const outer = state.subkriteria[i];
-                if (outer.subkriteria) {
-                    for (let j = 0; j < outer.subkriteria.length; j++) {
-                        const inner = outer.subkriteria[j];
-                        const kriteria = `${outer.kriteria} / ${inner.sub_kriteria}`
-                        const k_sc = `${outer.k_sc}-${inner.sk_sc}`;
-                        state.listSubKriteria.push({
-                            kriteria,
-                            k_sc,
-                        })
-                    }
-                } else {
-                    state.listSubKriteria.push({
-                        kriteria: outer.kriteria,
-                        k_sc: outer.k_sc,
-                    })
-                }
+    for (let i = 0; i < state.subkriteria.length; i++) {
+        const outer = state.subkriteria[i];
+        if (outer.subkriteria) {
+            for (let j = 0; j < outer.subkriteria.length; j++) {
+                const inner = outer.subkriteria[j];
+                const kriteria = `${outer.kriteria} / ${inner.sub_kriteria}`
+                const k_sc = `${outer.k_sc}-${inner.sk_sc}`;
+                state.listSubKriteria.push({
+                    kriteria,
+                    k_sc,
+                })
             }
-        })
-        // console.log(state.listSubKriteria)
-        // console.log(inputPenilaian)
-        const validation = ref([]);
-        const router = useRouter();
-        function store() {
-            http.post('/penilaian2', inputPenilaian)
-                .then(() => {
-                    router.push({
-                        name: 'penilaian2.index'
-                    })
-                }).catch((err) => {
-                    validation.value = err.response.data
-                });
+        } else {
+            state.listSubKriteria.push({
+                kriteria: outer.kriteria,
+                k_sc: outer.k_sc,
+            })
         }
-        return {
-            state,
-            inputPenilaian,
-            validation,
-            router,
-            store
-        }
-    },
+    }
+})
+// console.log(state.listSubKriteria)
+// console.log(inputPenilaian)
+const validation = ref([]);
+const router = useRouter();
+function store() {
+    http.post('/penilaian2', inputPenilaian)
+        .then(() => {
+            router.push({
+                name: 'penilaian2.index'
+            })
+        }).catch((err) => {
+            validation.value = err.response.data
+        });
 }
+
 </script>

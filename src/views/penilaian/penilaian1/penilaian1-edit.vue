@@ -92,12 +92,12 @@ export default {
         })
 
         const route = useRoute()
-        onMounted(() => {
-            http.get('/subkriteria1')
+        onMounted(async () => {
+            await http.get('/subkriteria1')
                 .then((response) => {
                     state.subkriteria = response.data.data
                 })
-            http.get(`/penilaian1/show/${route.params.id}`)
+            await http.get(`/penilaian1/show/${route.params.id}`)
                 .then((response) => {
                     inputPenilaian.nim = response.data.data[0].nim
                     for (let i = 0; i < state.subkriteria.length; i++) {

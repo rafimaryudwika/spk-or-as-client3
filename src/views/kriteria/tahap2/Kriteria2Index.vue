@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import kriteria2API from "./../../../api/listKriteria/tahap2/kriteria2";
+import kriteriaAPI from "./../../../api/listKriteria/tahap2/kriteria2";
 import { onMounted, reactive } from 'vue'
 export default {
     components: {},
@@ -85,7 +85,7 @@ export default {
             kriteria: []
         })
         onMounted(() => {
-            kriteria2API.index()
+            kriteriaAPI.index()
                 .then((response) => {
                     state.kriteria = response.data.data
                     console.log(state.kriteria)

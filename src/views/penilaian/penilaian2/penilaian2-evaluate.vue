@@ -2,7 +2,7 @@
     <div class="flex-1 bg-white dark:bg-gray-800">
         <div class="col-6">
             <h1 class="px-6 py-6 text-3xl font-extrabold dark:text-gray-200">
-                Edit Data Penilaian Peserta
+                Evaluasi Peserta
             </h1>
         </div>
         <div class="col-12">
@@ -63,7 +63,7 @@
 import { onMounted, reactive, ref, watchEffect, computed } from 'vue'
 import http from './../../../http-common.js'
 import { useRouter, useRoute } from 'vue-router'
-import penilaian1API from "./../../../api/listPeserta/tahap2/peserta";
+import penilaianAPI from "./../../../api/listPeserta/tahap2/peserta";
 
 
 export default {
@@ -151,7 +151,7 @@ export default {
         const validation = ref([]);
         const router = useRouter();
         function update() {
-            penilaian1API.lulus(route.params.id, inputLulus)
+            penilaianAPI.lulus(route.params.id, inputLulus)
                 .then(() => {
                     router.push({
                         name: 'penilaian2.calculate'

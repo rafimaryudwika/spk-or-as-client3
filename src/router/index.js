@@ -148,41 +148,123 @@ const routes = [
         component: () =>
             import('../views/penilaian/penilaian2/penilaian2-peserta.vue'),
     },
-    // {
-    //     path: '/penilaian2/view/:id',
-    //     name: 'penilaian2.view',
-    //     component: () =>
-    //         import('../views/penilaian/penilaian2/penilaian2-view.vue'),
-    // },
-    // {
-    //     path: '/penilaian2/calculate',
-    //     name: 'penilaian2.calculate',
-    //     component: () =>
-    //         import('../views/penilaian/penilaian2/penilaian2-calculate.vue'),
-    // },
-    // {
-    //     path: '/penilaian2/calculate/:id',
-    //     name: 'penilaian2.evaluate',
-    //     component: () =>
-    //         import('../views/penilaian/penilaian1/penilaian2-evaluate.vue'),
-    // },
-    // {
-    //     path: '/penilaian2/kelulusan',
-    //     name: 'penilaian2.kelulusan',
-    //     component: () =>
-    //         import('../views/penilaian/penilaian1/penilaian2-kelulusan.vue'),
-    // },
-    // {
-    //     path: '/penilaian2/edit/:id',
-    //     name: 'penilaian2.edit',
-    //     component: () =>
-    //         import('../views/penilaian/penilaian2/penilaian2-edit.vue'),
-    // },
+    {
+        path: '/penilaian2/view/:id',
+        name: 'penilaian2.view',
+        component: () =>
+            import('../views/penilaian/penilaian2/penilaian2-view.vue'),
+    },
+    {
+        path: '/penilaian2/calculate',
+        name: 'penilaian2.calculate',
+        component: () =>
+            import('../views/penilaian/penilaian2/penilaian2-calculate.vue'),
+    },
+    {
+        path: '/penilaian2/calculate/:id',
+        name: 'penilaian2.evaluate',
+        component: () =>
+            import('../views/penilaian/penilaian2/penilaian2-evaluate.vue'),
+    },
+    {
+        path: '/penilaian2/kelulusan',
+        name: 'penilaian2.kelulusan',
+        component: () =>
+            import('../views/penilaian/penilaian2/penilaian2-kelulusan.vue'),
+    },
+    {
+        path: '/penilaian2/edit/:id',
+        name: 'penilaian2.edit',
+        component: () =>
+            import('../views/penilaian/penilaian2/penilaian2-edit.vue'),
+    },
     {
         path: '/penilaian2/tambah/:id',
         name: 'penilaian2.tambah',
         component: () =>
             import('../views/penilaian/penilaian2/penilaian2-tambah.vue'),
+    },
+    //Tahap 3
+    {
+        path: '/kriteria3',
+        name: 'kriteria3.index',
+        component: () => import('../views/kriteria/tahap3/Kriteria3Index.vue'),
+    },
+    {
+        path: '/kriteria3/tambah',
+        name: 'kriteria3.tambah',
+        component: () => import('../views/kriteria/tahap3/Kriteria3Tambah.vue'),
+    },
+    {
+        path: '/kriteria3/edit/:id',
+        name: 'kriteria3.edit',
+        component: () => import('../views/kriteria/tahap3/Kriteria3Edit.vue'),
+    },
+    {
+        path: '/kriteria3/subkriteria',
+        name: 'subkriteria3.index',
+        component: () =>
+            import('../views/kriteria/tahap3/SubKriteria3Index.vue'),
+    },
+    {
+        path: '/kriteria3/subkriteria/tambah',
+        name: 'subkriteria3.tambah',
+        component: () =>
+            import('../views/kriteria/tahap3/SubKriteria3Tambah.vue'),
+    },
+    {
+        path: '/kriteria3/subkriteria/edit/:id',
+        name: 'subkriteria3.edit',
+        component: () =>
+            import('../views/kriteria/tahap3/SubKriteria3Edit.vue'),
+    },
+    {
+        path: '/penilaian3/penilaian',
+        name: 'penilaian3.index',
+        component: () =>
+            import('../views/penilaian/penilaian3/penilaian3-index.vue'),
+    },
+    {
+        path: '/penilaian3',
+        name: 'penilaian3.peserta',
+        component: () =>
+            import('../views/penilaian/penilaian3/penilaian3-peserta.vue'),
+    },
+    {
+        path: '/penilaian3/view/:id',
+        name: 'penilaian3.view',
+        component: () =>
+            import('../views/penilaian/penilaian3/penilaian3-view.vue'),
+    },
+    {
+        path: '/penilaian3/calculate',
+        name: 'penilaian3.calculate',
+        component: () =>
+            import('../views/penilaian/penilaian3/penilaian3-calculate.vue'),
+    },
+    {
+        path: '/penilaian3/calculate/:id',
+        name: 'penilaian3.evaluate',
+        component: () =>
+            import('../views/penilaian/penilaian3/penilaian3-evaluate.vue'),
+    },
+    {
+        path: '/penilaian3/kelulusan',
+        name: 'penilaian3.kelulusan',
+        component: () =>
+            import('../views/penilaian/penilaian3/penilaian3-kelulusan.vue'),
+    },
+    {
+        path: '/penilaian3/edit/:id',
+        name: 'penilaian3.edit',
+        component: () =>
+            import('../views/penilaian/penilaian3/penilaian3-edit.vue'),
+    },
+    {
+        path: '/penilaian3/tambah/:id',
+        name: 'penilaian3.tambah',
+        component: () =>
+            import('../views/penilaian/penilaian3/penilaian3-tambah.vue'),
     },
 ]
 const router = createRouter({

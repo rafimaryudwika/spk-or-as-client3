@@ -16,7 +16,7 @@
                                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Nama
                                         Kriteria</label>
                                     <select id="kriteria" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500
-                                    required " v-model="inputSubKriteria.id_k2">
+                                    required " v-model="inputSubKriteria.id_k3">
                                         <option v-for="krit in state.kriteria" :key="krit.id_k2" :value="krit.id_k2">{{
                                                 krit.kriteria
                                         }}</option>
@@ -61,14 +61,14 @@
 <script setup>
 import { onMounted, reactive, ref, watchEffect, computed } from 'vue'
 import kriteria2API from "./../../../api/listKriteria/tahap2/kriteria2";
-import subKriteriaAPI from "./../../../api/listKriteria/tahap2/subkriteria2";
+import subKriteriaAPI from "./../../../api/listKriteria/tahap3/subkriteria3";
 import { useRouter, useRoute } from 'vue-router'
 
 const state = reactive({
     kriteria: [],
 })
 let inputSubKriteria = reactive({
-    id_k2: '',
+    id_k3: '',
     sub_kriteria: '',
     kode: '',
     bobot: ''
@@ -89,7 +89,7 @@ function store() {
     subKriteriaAPI.create(inputSubKriteria)
         .then(() => {
             router.push({
-                name: 'subkriteria2.index'
+                name: 'subkriteria3.index'
             })
         }).catch((err) => {
             validation.value = err.response.data

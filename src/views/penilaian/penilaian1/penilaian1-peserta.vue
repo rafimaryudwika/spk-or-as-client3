@@ -5,17 +5,47 @@
                 Data Peserta Tahap 1
             </h1>
         </div>
+        <div class="p-2">
+            <div id="alert-5" class="flex p-4 bg-gray-100 rounded-lg dark:bg-gray-700" role="alert">
+                <svg aria-hidden="true" class="flex-shrink-0 w-5 h-5 text-gray-700 dark:text-gray-300"
+                    fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd"
+                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                        clip-rule="evenodd"></path>
+                </svg>
+                <span class="sr-only">Info</span>
+                <div class="ml-3 text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Halaman ini berfungsi untuk melihat peserta yang mengikuti kegiatan Open Recruitment Tahap 1, untuk
+                    melakukan penilaian maka silahkan klik tombol <b>Import Data</b> di bawah untuk mengimpor data
+                    pendaftar yang sudah mendaftar ulang. Untuk melihat detail peserta, klik <b>Lihat</b> di samping
+                    peserta yang diinginkan.
+                </div>
+                <button type="button"
+                    class="ml-auto -mx-1.5 -my-1.5 bg-gray-100 text-gray-500 rounded-lg focus:ring-2 focus:ring-gray-400 p-1.5 hover:bg-gray-200 inline-flex h-8 w-8 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white"
+                    data-dismiss-target="#alert-5" aria-label="Close">
+                    <span class="sr-only">Dismiss</span>
+                    <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
         <div class="col-12">
             <div class="flex-1">
                 <div class="overflow-y-auto sm:-mx-6 lg:-mx-0">
                     <div class="py-2 inline-clip sm:px-6 lg:px-4">
-                        <button @click="getData"
-                            class="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
-                            <span
-                                class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-                                Import Data
-                            </span>
-                        </button>
+                        <div class="col-12">
+                            <button @click="getData"
+                                class="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
+                                <span
+                                    class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                                    Import Data
+                                </span>
+                            </button>
+                        </div>
                         <div class="sm:rounded-lg ">
                             <table class="min-w-full shadow-md">
                                 <thead class="bg-gray-100 dark:bg-gray-700">
@@ -146,122 +176,103 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import { onMounted, ref, reactive, computed, watchEffect } from 'vue'
-import penilaian1API from "./../../../api/listPeserta/tahap1/peserta";
-import { useRoute, useRouter } from "vue-router";
+import penilaianAPI from "./../../../api/listPeserta/tahap3/peserta";
 
+const state = reactive({
+    peserta1: [],
+    currentSort: 'nim',
+    currentSortDir: 'asc',
+    listSubKriteria: [],
+    currentSortNested: [],
+    nested: false,
+    currentSort: 'nim',
+    currentSortDir: 'asc',
+    pageSize: 12,
+    currentPage: 1,
+    page: []
+})
 
-export default {
-    components: {},
-
-    setup() {
-        const state = reactive({
-            peserta1: [],
-            currentSort: 'nim',
-            currentSortDir: 'asc',
-            listSubKriteria: [],
-            currentSortNested: [],
-            nested: false,
-            currentSort: 'nim',
-            currentSortDir: 'asc',
-            pageSize: 12,
-            currentPage: 1,
-            page: []
+onMounted(() => {
+    penilaianAPI.index()
+        .then((response) => {
+            state.peserta1 = response.data.data
+        }).catch((err) => {
+            console.log(err.response.data)
+        });
+})
+watchEffect(() => {
+    let pageCount = Math.ceil(state.peserta1.length / state.pageSize)
+    state.page = []
+    for (let i = 1; i <= pageCount; i++) {
+        state.page.push({
+            name: i,
+            isDisabled: i == state.currentPage
         })
+    }
+    console.log(state.page)
+})
 
-        onMounted(() => {
-            penilaian1API.index()
-                .then((response) => {
-                    state.peserta1 = response.data.data
-                }).catch((err) => {
-                    console.log(err.response.data)
-                });
-        })
-        watchEffect(() => {
-            let pageCount = Math.ceil(state.peserta1.length / state.pageSize)
-            state.page = []
-            for (let i = 1; i <= pageCount; i++) {
-                state.page.push({
-                    name: i,
-                    isDisabled: i == state.currentPage
-                })
-            }
-            console.log(state.page)
-        })
+function sorting(s, nested = false) {
+    if (s === state.currentSort) {
+        state.currentSortDir = state.currentSortDir === 'asc' ? 'desc' : 'asc'
+    }
+    state.nested = nested
+    state.currentSort = s
+    if (state.nested) {
+        state.currentSortNested = s.split('.')
+    } else {
+        state.currentSort = s
+    }
+}
 
-        function sorting(s, nested = false) {
-            if (s === state.currentSort) {
-                state.currentSortDir = state.currentSortDir === 'asc' ? 'desc' : 'asc'
-            }
-            state.nested = nested
-            state.currentSort = s
-            if (state.nested) {
-                state.currentSortNested = s.split('.')
-            } else {
-                state.currentSort = s
-            }
+function nextPage() {
+    if ((state.currentPage * state.pageSize) < state.peserta1.length) state.currentPage++;
+}
+
+function prevPage() {
+    if (state.currentPage > 1) state.currentPage--;
+}
+
+function clickPage(page) {
+    state.currentPage = page;
+}
+
+function isPageActive(page) {
+    if (state.currentPage === page) return "z-10 py-2 px-3 leading-tight text-blue-600 bg-blue-50 border border-blue-300 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
+}
+
+const sortedData = computed(() => {
+    // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+    return state.peserta1.sort((a, b) => {
+        let modifier = 1
+        if (state.currentSortDir == 'desc') modifier = -1
+        if (!state.nested || state.currentSortNested.length == 1) {
+            if (a[state.currentSort] < b[state.currentSort]) return -1 * modifier
+            if (a[state.currentSort] > b[state.currentSort]) return 1 * modifier
+            return 0
+        } else if (state.currentSortNested.length == 2) {
+            if (a[state.currentSortNested[0]][state.currentSortNested[1]]
+                < b[state.currentSortNested[0]][state.currentSortNested[1]]) return -1 * modifier
+            if (a[state.currentSortNested[0]][state.currentSortNested[1]]
+                > b[state.currentSortNested[0]][state.currentSortNested[1]]) return 1 * modifier
+            return 0
         }
-
-        function nextPage() {
-            if ((state.currentPage * state.pageSize) < state.peserta1.length) state.currentPage++;
-        }
-
-        function prevPage() {
-            if (state.currentPage > 1) state.currentPage--;
-        }
-
-        function clickPage(page) {
-            state.currentPage = page;
-        }
-
-        function isPageActive(page) {
-            if (state.currentPage === page) return "z-10 py-2 px-3 leading-tight text-blue-600 bg-blue-50 border border-blue-300 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
-        }
-
-        const sortedData = computed(() => {
-            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-            return state.peserta1.sort((a, b) => {
-                let modifier = 1
-                if (state.currentSortDir == 'desc') modifier = -1
-                if (!state.nested || state.currentSortNested.length == 1) {
-                    if (a[state.currentSort] < b[state.currentSort]) return -1 * modifier
-                    if (a[state.currentSort] > b[state.currentSort]) return 1 * modifier
-                    return 0
-                } else if (state.currentSortNested.length == 2) {
-                    if (a[state.currentSortNested[0]][state.currentSortNested[1]]
-                        < b[state.currentSortNested[0]][state.currentSortNested[1]]) return -1 * modifier
-                    if (a[state.currentSortNested[0]][state.currentSortNested[1]]
-                        > b[state.currentSortNested[0]][state.currentSortNested[1]]) return 1 * modifier
-                    return 0
-                }
-            }).filter((row, index) => {
-                let start = (state.currentPage - 1) * state.pageSize;
-                let end = state.currentPage * state.pageSize;
-                if (index >= start && index < end) return true;
-            });
-        })
-        const validation = ref([]);
-        function getData() {
-            penilaian1API.import()
-                .then(() => {
-                    window.location.reload();
-                }).catch((err) => {
-                    validation.value = err.response.data
-                });
-        }
-
-        return {
-            state,
-            sorting,
-            sortedData,
-            getData,
-            nextPage,
-            prevPage,
-            clickPage,
-            isPageActive
-        }
-    },
+    }).filter((row, index) => {
+        let start = (state.currentPage - 1) * state.pageSize;
+        let end = state.currentPage * state.pageSize;
+        if (index >= start && index < end) return true;
+    });
+})
+const validation = ref([]);
+function getData() {
+    penilaianAPI.import()
+        .then(() => {
+            window.location.reload();
+        }).catch((err) => {
+            validation.value = err.response.data
+        });
 }
 </script>
 

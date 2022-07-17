@@ -48,58 +48,45 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import { onMounted, reactive, ref, watchEffect, computed } from 'vue'
-import http from './../../../http-common.js'
-import kriteria2API from "./../../../api/listKriteria/tahap2/kriteria2";
+import kriteriaAPI from "./../../../api/listKriteria/tahap2/kriteria2";
 import { useRouter, useRoute } from 'vue-router'
 
-export default {
-    components: {},
-    setup() {
-        const state = reactive({
-            kriteria: [],
-        })
-        let inputKriteria = reactive({
-            kriteria: '',
-            kode: '',
-            bobot: ''
-        })
+const state = reactive({
+    kriteria: [],
+})
+let inputKriteria = reactive({
+    kriteria: '',
+    kode: '',
+    bobot: ''
+})
 
-        const route = useRoute()
-        onMounted(() => {
-            kriteria2API.show(route.params.id)
-                .then((response) => {
-                    state.kriteria = response.data.data
-                    inputKriteria.id_k2 = response.data.data[0].id_k2
-                    inputKriteria.kriteria = response.data.data[0].kriteria
-                    inputKriteria.kode = response.data.data[0].kode
-                    inputKriteria.bobot = response.data.data[0].bobot
-                    console.log(state.kriteria)
-                }).catch((err) => {
+const route = useRoute()
+onMounted(() => {
+    kriteriaAPI.show(route.params.id)
+        .then((response) => {
+            state.kriteria = response.data.data
+            inputKriteria.kriteria = response.data.data[0].kriteria
+            inputKriteria.bobot = response.data.data[0].bobot
+            inputKriteria.kode = response.data.data[0].kode
+            console.log(state.kriteria)
+        }).catch((err) => {
 
-                });
-        })
+        });
+})
 
-        const validation = ref([]);
-        const router = useRouter();
-        function update() {
-            kriteria2API.update(route.params.id, inputKriteria)
-                .then(() => {
-                    router.push({
-                        name: 'kriteria2.index'
-                    })
-                }).catch((err) => {
-                    validation.value = err.response.data
-                });
-        }
-        return {
-            state,
-            inputKriteria,
-            validation,
-            router,
-            update
-        }
-    },
+const validation = ref([]);
+const router = useRouter();
+function update() {
+    kriteriaAPI.update(route.params.id, inputKriteria)
+        .then(() => {
+            router.push({
+                name: 'kriteria2.index'
+            })
+        }).catch((err) => {
+            validation.value = err.response.data
+        });
 }
+
 </script>

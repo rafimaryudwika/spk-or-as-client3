@@ -151,12 +151,18 @@
                            Penilaian</router-link>
                      </li>
                      <li>
-                        <a href="#"
-                           class="flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg pl-11 group hover:bg-blue-700 dark:text-white hover:dark:bg-blue-800">Kalkulasi</a>
+                        <router-link :to="{
+                           name: 'penilaian2.calculate',
+                        }" href="#"
+                           class="flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg pl-11 group hover:bg-blue-700 dark:text-white hover:dark:bg-blue-800">
+                           Kalkulasi</router-link>
                      </li>
                      <li>
-                        <a href="#"
-                           class="flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg pl-11 group hover:bg-blue-700 dark:text-white hover:dark:bg-blue-800">Kelulusan</a>
+                        <router-link :to="{
+                           name: 'penilaian2.kelulusan',
+                        }" href="#"
+                           class="flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg pl-11 group hover:bg-blue-700 dark:text-white hover:dark:bg-blue-800">
+                           Kelulusan</router-link>
                      </li>
                   </ul>
                </li>
@@ -179,28 +185,46 @@
                   </button>
                   <ul id="dropdown-peserta" class="hidden py-2 space-y-2">
                      <li>
-                        <a href="#"
-                           class="flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg pl-11 group hover:bg-blue-700 dark:text-white hover:dark:bg-blue-800">Kriteria</a>
+                        <router-link :to="{
+                           name: 'kriteria3.index',
+                        }" href="#"
+                           class="flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg pl-11 group hover:bg-blue-700 dark:text-white hover:dark:bg-blue-800">
+                           Kriteria</router-link>
                      </li>
                      <li>
-                        <a href="#"
-                           class="flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg pl-11 group hover:bg-blue-700 dark:text-white hover:dark:bg-blue-800">Subkriteria</a>
+                        <router-link :to="{
+                           name: 'subkriteria3.index',
+                        }" href="#"
+                           class="flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg pl-11 group hover:bg-blue-700 dark:text-white hover:dark:bg-blue-800">
+                           Subkriteria</router-link>
                      </li>
                      <li>
-                        <a href="#"
-                           class="flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg pl-11 group hover:bg-blue-700 dark:text-white hover:dark:bg-blue-800">Peserta</a>
+                        <router-link :to="{
+                           name: 'penilaian3.peserta',
+                        }" href="#"
+                           class="flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg pl-11 group hover:bg-blue-700 dark:text-white hover:dark:bg-blue-800">
+                           Peserta</router-link>
                      </li>
                      <li>
-                        <a href="#"
-                           class="flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg pl-11 group hover:bg-blue-700 dark:text-white hover:dark:bg-blue-800">Penilaian</a>
+                        <router-link :to="{
+                           name: 'penilaian3.index',
+                        }" href="#"
+                           class="flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg pl-11 group hover:bg-blue-700 dark:text-white hover:dark:bg-blue-800">
+                           Penilaian</router-link>
                      </li>
                      <li>
-                        <a href="#"
-                           class="flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg pl-11 group hover:bg-blue-700 dark:text-white hover:dark:bg-blue-800">Kalkulasi</a>
+                        <router-link :to="{
+                           name: 'penilaian3.calculate',
+                        }" href="#"
+                           class="flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg pl-11 group hover:bg-blue-700 dark:text-white hover:dark:bg-blue-800">
+                           Kalkulasi</router-link>
                      </li>
                      <li>
-                        <a href="#"
-                           class="flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg pl-11 group hover:bg-blue-700 dark:text-white hover:dark:bg-blue-800">Kelulusan</a>
+                        <router-link :to="{
+                           name: 'penilaian3.kelulusan',
+                        }" href="#"
+                           class="flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg pl-11 group hover:bg-blue-700 dark:text-white hover:dark:bg-blue-800">
+                           Kelulusan</router-link>
                      </li>
                   </ul>
                </li>
