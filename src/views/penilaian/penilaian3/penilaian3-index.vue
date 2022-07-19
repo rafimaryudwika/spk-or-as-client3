@@ -5,6 +5,36 @@
                 Data Penilaian
             </h1>
         </div>
+        <div class="p-2">
+            <div id="alert-5" class="flex p-4 bg-gray-100 rounded-lg dark:bg-gray-700" role="alert">
+                <svg aria-hidden="true" class="flex-shrink-0 w-5 h-5 text-gray-700 dark:text-gray-300"
+                    fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd"
+                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                        clip-rule="evenodd"></path>
+                </svg>
+                <span class="sr-only">Info</span>
+                <div class="ml-3 text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Halaman ini berfungsi untuk melihat dan menginput data penilaian masing-masing peserta Open
+                    Recruitment, tabel ini beradaptasi secara dinamis sesuai dengan sub-kriteria dan
+                    kriteria yang sudah ditentukan.<br>Jika
+                    peserta Open Recruitment belum memiliki penilaian maka silakan klik tombol <span
+                        class="font-bold">Tambah</span> untuk menginputkan penilaian, jika penilaian sudah ada maka bisa
+                    klik tombol <span class="font-bold">Edit</span> untuk mengubah penilaian.
+                </div>
+                <button type="button"
+                    class="ml-auto -mx-1.5 -my-1.5 bg-gray-100 text-gray-500 rounded-lg focus:ring-2 focus:ring-gray-400 p-1.5 hover:bg-gray-200 inline-flex h-8 w-8 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white"
+                    data-dismiss-target="#alert-5" aria-label="Close">
+                    <span class="sr-only">Dismiss</span>
+                    <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
         <div class="col-12">
             <div class="flex-1">
                 <div class="overflow-y-auto sm:-mx-6 lg:-mx-0">
@@ -128,95 +158,82 @@
     </div>
 </template>
 
-<script>
+<script async setup>
 import { onMounted, ref, reactive, computed, watchEffect } from 'vue'
 import penilaianAPI from "./../../../api/listPeserta/tahap3/peserta";
 import kriteriaAPI from "./../../../api/listKriteria/tahap3/kriteria3";
 import subKriteriaAPI from "./../../../api/listKriteria/tahap3/subkriteria3";
 
+const state = reactive({
+    peserta1: [],
+    penilaian1: [],
+    subkriteria: [],
+    kriteria: [],
+    currentSort: 'nim',
+    currentSortDir: 'asc',
+    listSubKriteria: []
+})
 
-export default {
-    components: {},
+onMounted(async () => {
+    await subKriteriaAPI.index()
+        .then((response) => {
+            state.subkriteria = response.data.data
+        }).catch((err) => {
+            console.log(err.response.data)
+        });
+    await kriteriaAPI.index()
+        .then((response) => {
+            state.kriteria = response.data.data
+        }).catch((err) => {
+            console.log(err.response.data)
+        });
+    await penilaianAPI.index()
+        .then((response) => {
+            state.peserta1 = response.data.data
+        }).catch((err) => {
+            console.log(err.response.data)
+        });
+})
 
-    setup() {
-        const state = reactive({
-            peserta1: [],
-            penilaian1: [],
-            subkriteria: [],
-            kriteria: [],
-            currentSort: 'nim',
-            currentSortDir: 'asc',
-            listSubKriteria: []
-        })
-
-        onMounted(() => {
-            subKriteriaAPI.index()
-                .then((response) => {
-                    state.subkriteria = response.data.data
-                    console.log(state.subkriteria)
-                }).catch((err) => {
-                    console.log(err.response.data)
-                });
-            kriteriaAPI.index()
-                .then((response) => {
-                    state.kriteria = response.data.data
-                }).catch((err) => {
-                    console.log(err.response.data)
-                });
-            penilaianAPI.index()
-                .then((response) => {
-                    state.peserta1 = response.data.data
-                }).catch((err) => {
-                    console.log(err.response.data)
-                });
-        })
-
-        watchEffect(() => {
-            for (let i = 0; i < state.subkriteria.length; i++) {
-                const outer = state.subkriteria[i];
-                if (outer.subkriteria) {
-                    for (let j = 0; j < outer.subkriteria.length; j++) {
-                        const inner = outer.subkriteria[j];
-                        const kriteria = `${outer.kriteria} / ${inner.sub_kriteria}`
-                        const k_sc = `${outer.k_sc}-${inner.sk_sc}`;
-                        state.listSubKriteria.push({
-                            kriteria,
-                            k_sc,
-                        })
-                    }
-                } else {
-                    state.listSubKriteria.push({
-                        kriteria: outer.kriteria,
-                        k_sc: outer.k_sc,
-                    })
-                }
+watchEffect(() => {
+    for (let i = 0; i < state.subkriteria.length; i++) {
+        const outer = state.subkriteria[i];
+        if (outer.subkriteria) {
+            for (let j = 0; j < outer.subkriteria.length; j++) {
+                const inner = outer.subkriteria[j];
+                const kriteria = `${outer.kriteria} / ${inner.sub_kriteria}`
+                const k_sc = `${outer.k_sc}-${inner.sk_sc}`;
+                state.listSubKriteria.push({
+                    kriteria,
+                    k_sc,
+                })
             }
-        })
-
-        function sorting(s) {
-            if (s === state.currentSort) {
-                state.currentSortDir = state.currentSortDir === 'asc' ? 'desc' : 'asc'
-            }
-            state.currentSort = s
-        }
-
-        const sortedData = computed(() => {
-            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-            return state.peserta1.sort((a, b) => {
-                let modifier = 1
-                if (state.currentSortDir == 'desc') modifier = -1
-                if (a[state.currentSort] < b[state.currentSort]) return -1 * modifier
-                if (a[state.currentSort] > b[state.currentSort]) return 1 * modifier
-                return 0
+        } else {
+            state.listSubKriteria.push({
+                kriteria: outer.kriteria,
+                k_sc: outer.k_sc,
             })
-        })
-        return {
-            state,
-            sorting,
-            sortedData
         }
-    },
+    }
+})
+
+function sorting(s) {
+    if (s === state.currentSort) {
+        state.currentSortDir = state.currentSortDir === 'asc' ? 'desc' : 'asc'
+    }
+    state.currentSort = s
 }
+
+const sortedData = computed(() => {
+    // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+    return state.peserta1.sort((a, b) => {
+        let modifier = 1
+        if (state.currentSortDir == 'desc') modifier = -1
+        if (a[state.currentSort] < b[state.currentSort]) return -1 * modifier
+        if (a[state.currentSort] > b[state.currentSort]) return 1 * modifier
+        return 0
+    })
+})
 </script>
 
 <style>

@@ -317,9 +317,9 @@
 
 <script setup>
 import { onMounted, ref, reactive, computed, watchEffect } from 'vue'
-import penilaian1API from "./../../../api/listPeserta/tahap1/peserta";
-import kriteria1API from "./../../../api/listKriteria/tahap1/kriteria1";
-import subKriteria1API from "./../../../api/listKriteria/tahap1/subkriteria1";
+import penilaianAPI from "./../../../api/listPeserta/tahap1/peserta";
+import kriteriaAPI from "./../../../api/listKriteria/tahap1/kriteria1";
+import subKriteriaAPI from "./../../../api/listKriteria/tahap1/subkriteria1";
 import vue3Slider from "@vueform/slider"
 import http from "./../../../http-common";
 
@@ -346,22 +346,21 @@ let filterCalc = reactive({
 })
 
 onMounted(() => {
-    subKriteria1API.index()
+    subKriteriaAPI.index()
         .then((response) => {
             state.subkriteria = response.data.data
         }).catch((err) => {
             console.log(err.response.data)
         });
-    kriteria1API.index()
+    kriteriaAPI.index()
         .then((response) => {
             state.kriteria = response.data.data
         }).catch((err) => {
             console.log(err.response.data)
         });
-    penilaian1API.calc()
+    penilaianAPI.calc()
         .then((response) => {
             state.peserta1 = response.data.data
-            console.log(state.peserta1)
         }).catch((err) => {
             console.log(err.response.data)
         });

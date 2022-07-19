@@ -50,7 +50,6 @@
                                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                                     Tambah</router-link>
                             </div>
-
                             <table class="min-w-full shadow-md ">
                                 <thead class="bg-gray-100 dark:bg-gray-700">
                                     <tr>
@@ -121,59 +120,52 @@
     </div>
 </template>
 
-<script>
-import subKriteria1API from "./../../../api/listKriteria/tahap1/subkriteria1";
+<script setup>
+import subKriteriaAPI from "./../../../api/listKriteria/tahap1/subkriteria1";
 import { onMounted, reactive, watchEffect } from 'vue'
-export default {
-    components: {},
 
-    setup() {
-        const state = reactive({
-            subkriteria: [],
-            listSubKriteria: []
-        })
-        onMounted(() => {
-            subKriteria1API.index()
-                .then((response) => {
-                    state.subkriteria = response.data.data
-                    console.log(state.subkriteria)
-                }).catch((err) => {
+const state = reactive({
+    subkriteria: [],
+    listSubKriteria: []
+})
+onMounted(() => {
+    subKriteriaAPI.index()
+        .then((response) => {
+            state.subkriteria = response.data.data
+            console.log(state.subkriteria)
+        }).catch((err) => {
 
-                });
-        })
+        });
+})
 
-        watchEffect(() => {
-            for (let i = 0; i < state.subkriteria.length; i++) {
-                const outer = state.subkriteria[i];
-                if (outer.subkriteria) {
-                    for (let j = 0; j < outer.subkriteria.length; j++) {
-                        const inner = outer.subkriteria[j];
-                        const id_sk1 = `${inner.id_sk1}`
-                        const kriteria = `${outer.kriteria}`
-                        const subkriteria = `${inner.sub_kriteria}`
-                        const bobot = `${inner.bobot}`
-                        state.listSubKriteria.push({
-                            id_sk1,
-                            kriteria,
-                            subkriteria,
-                            bobot
-                        })
-                    }
-                } else {
-                    state.listSubKriteria.push({
-                        id_sk1: outer.id_sk1,
-                        kriteria: outer.kriteria,
-                        subkriteria: outer.kriteria,
-                        bobot: outer.bobot_sk
-                    })
-                }
+watchEffect(() => {
+    for (let i = 0; i < state.subkriteria.length; i++) {
+        const outer = state.subkriteria[i];
+        if (outer.subkriteria) {
+            for (let j = 0; j < outer.subkriteria.length; j++) {
+                const inner = outer.subkriteria[j];
+                const id_sk1 = `${inner.id_sk1}`
+                const kriteria = `${outer.kriteria}`
+                const subkriteria = `${inner.sub_kriteria}`
+                const bobot = `${inner.bobot}`
+                state.listSubKriteria.push({
+                    id_sk1,
+                    kriteria,
+                    subkriteria,
+                    bobot
+                })
             }
-        })
-
-        console.log(state.listSubKriteria)
-        return {
-            state
+        } else {
+            state.listSubKriteria.push({
+                id_sk1: outer.id_sk1,
+                kriteria: outer.kriteria,
+                subkriteria: outer.kriteria,
+                bobot: outer.bobot_sk
+            })
         }
     }
-}
+})
+
+console.log(state.listSubKriteria)
+
 </script>

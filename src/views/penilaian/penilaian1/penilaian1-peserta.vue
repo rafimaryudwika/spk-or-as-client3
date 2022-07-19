@@ -178,7 +178,7 @@
 
 <script setup>
 import { onMounted, ref, reactive, computed, watchEffect } from 'vue'
-import penilaianAPI from "./../../../api/listPeserta/tahap3/peserta";
+import penilaianAPI from "./../../../api/listPeserta/tahap1/peserta";
 
 const state = reactive({
     peserta1: [],

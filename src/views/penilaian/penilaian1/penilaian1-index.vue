@@ -53,7 +53,7 @@
                                             Nama
                                         </th>
                                         <template v-for="sub in state.subkriteria" :key="sub.id_sk1">
-                                            <th v-if="sub.subkriteria" colspan="3" scope="col"
+                                            <th v-if="sub.subkriteria" :colspan="sub.subkriteria.length" scope="col"
                                                 class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
                                                 {{ sub.kriteria }}
                                             </th>
@@ -160,12 +160,9 @@
 
 <script async setup>
 import { onMounted, ref, reactive, computed, watchEffect } from 'vue'
-import http from "./../../../http-common.js";
-import penilaian1API from "./../../../api/listPeserta/tahap1/peserta";
-import kriteria1API from "./../../../api/listKriteria/tahap1/kriteria1";
-import subKriteria1API from "./../../../api/listKriteria/tahap1/subkriteria1";
-
-
+import penilaianAPI from "./../../../api/listPeserta/tahap1/peserta";
+import kriteriaAPI from "./../../../api/listKriteria/tahap1/kriteria1";
+import subKriteriaAPI from "./../../../api/listKriteria/tahap1/subkriteria1";
 
 const state = reactive({
     peserta1: [],
@@ -174,23 +171,23 @@ const state = reactive({
     kriteria: [],
     currentSort: 'nim',
     currentSortDir: 'asc',
-    listSubKriteria: [],
+    listSubKriteria: []
 })
 
 onMounted(async () => {
-    await subKriteria1API.index()
+    await subKriteriaAPI.index()
         .then((response) => {
             state.subkriteria = response.data.data
         }).catch((err) => {
             console.log(err.response.data)
         });
-    await kriteria1API.index()
+    await kriteriaAPI.index()
         .then((response) => {
             state.kriteria = response.data.data
         }).catch((err) => {
             console.log(err.response.data)
         });
-    await penilaian1API.index()
+    await penilaianAPI.index()
         .then((response) => {
             state.peserta1 = response.data.data
         }).catch((err) => {

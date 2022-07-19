@@ -15,7 +15,8 @@
                 </svg>
                 <span class="sr-only">Info</span>
                 <div class="ml-3 text-sm font-medium text-gray-700 dark:text-gray-300">
-                    Halaman ini berfungsi untuk melihat pendaftar yang telah mendaftar di Open Recruitment
+                    Halaman ini berfungsi untuk melihat pendaftar yang telah mendaftar di Open Recruitment, untuk
+                    melihat detail pendaftar silahkan klik tombol <b>Lihat</b> pada pendaftar yang diinginkan.
                 </div>
                 <button type="button"
                     class="ml-auto -mx-1.5 -my-1.5 bg-gray-100 text-gray-500 rounded-lg focus:ring-2 focus:ring-gray-400 p-1.5 hover:bg-gray-200 inline-flex h-8 w-8 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white"
