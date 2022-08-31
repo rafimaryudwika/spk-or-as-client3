@@ -48,7 +48,7 @@
                                         Kriteria</label>
                                     <select id="kriteria" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500
                                     required " v-model="inputSubKriteria.id_k3">
-                                        <option v-for="krit in state.kriteria" :key="krit.id_k2" :value="krit.id_k2">{{
+                                        <option v-for="krit in state.kriteria" :key="krit.id_k3" :value="krit.id_k3">{{
                                                 krit.kriteria
                                         }}</option>
                                     </select>
@@ -91,7 +91,7 @@
 
 <script setup>
 import { onMounted, reactive, ref, watchEffect, computed } from 'vue'
-import kriteria2PI from "./../../../api/listKriteria/tahap2/kriteria2";
+import kriteriaAPI from "./../../../api/listKriteria/tahap3/kriteria3";
 import subKriteriaAPI from "./../../../api/listKriteria/tahap3/subkriteria3";
 import { useRouter, useRoute } from 'vue-router'
 

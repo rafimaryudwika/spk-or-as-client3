@@ -107,6 +107,8 @@
                                             }"
                                                 class="text-blue-600 hover:text-blue-900 dark:text-blue-500 dark:hover:underline">
                                                 Edit</router-link>
+                                            <a @click.prevent="destroy(sk.id_sk1, index)" href=""
+                                                class="px-6 py-4 text-sm font-medium text-right text-red-500 whitespace-nowrap">Delete</a>
                                         </td>
                                     </tr>
 
@@ -165,6 +167,15 @@ watchEffect(() => {
         }
     }
 })
+
+const destroy = (id, index) => {
+    subKriteriaAPI.delete(id)
+        .then(() => {
+            state.subkriteria.splice(index, 1)
+        }).catch((err) => {
+            console.log(err.response.data)
+        });
+}
 
 console.log(state.listSubKriteria)
 

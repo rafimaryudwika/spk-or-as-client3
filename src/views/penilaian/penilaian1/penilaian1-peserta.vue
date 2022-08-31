@@ -189,7 +189,7 @@ const state = reactive({
     nested: false,
     currentSort: 'nim',
     currentSortDir: 'asc',
-    pageSize: 12,
+    pageSize: 10,
     currentPage: 1,
     page: []
 })

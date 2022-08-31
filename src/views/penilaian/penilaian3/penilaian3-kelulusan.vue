@@ -59,11 +59,11 @@
                                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-600">
                                         <td
                                             class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            {{ peserta1.nim }}
+                                            {{  peserta1.nim  }}
                                         </td>
                                         <td
                                             class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                            {{ peserta1.nama }}
+                                            {{  peserta1.nama  }}
                                         </td>
                                         <td v-if="peserta1.lulus == 1"
                                             class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-gray-400">
@@ -98,7 +98,7 @@ export default {
         })
 
         onMounted(() => {
-            penilaianAPI.calc()
+            penilaianAPI.index()
                 .then((response) => {
                     state.peserta1 = response.data.data
                     console.log(state.peserta1)

@@ -20,6 +20,6 @@ export default {
     },
 
     delete(id) {
-        return axios.delete('/kriteria2/' + id)
+        return http.delete('/kriteria2/' + id)
     },
 }

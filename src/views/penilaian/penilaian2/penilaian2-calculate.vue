@@ -2,7 +2,7 @@
     <div class="flex-1 bg-white dark:bg-gray-800">
         <div class="col-6">
             <h1 class="px-6 py-6 text-3xl font-extrabold dark:text-gray-200">
-                Data Kalkulasi
+                Data Kalkulasi Penilaian Tahap 2
             </h1>
         </div>
         <div class="p-2">
@@ -82,7 +82,7 @@
                                     v-model="filterCalc.fakultas">
                                     <option value="">None</option>
                                     <option v-for="fakultas in filteredFakultas" :key="fakultas.id_f"
-                                        :value="fakultas.fakultas">{{ fakultas.fakultas }}</option>
+                                        :value="fakultas.fakultas">{{  fakultas.fakultas  }}</option>
                                 </select>
                             </div>
                             <div class="m-1 flex-w-24">
@@ -164,13 +164,17 @@
                                             class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
                                             Nilai
                                         </th>
-                                        <th :colspan="state.listSubKriteria.length" scope="colgroup"
+                                        <th :colspan="state.listSubKriteria.length + 6" scope="colgroup"
                                             class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
                                             Normalisasi
                                         </th>
                                         <th @click="sorting('total')" rowspan="3" scope="colgroup"
                                             class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-700 uppercase cursor-pointer dark:text-gray-400">
                                             Total
+                                        </th>
+                                        <th @click="sorting('total')" rowspan="3" scope="colgroup"
+                                            class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-700 uppercase cursor-pointer dark:text-gray-400">
+                                            Total Genap
                                         </th>
                                         <th rowspan="3" scope="colgroup"
                                             class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
@@ -186,23 +190,23 @@
                                         <template v-for="sub in state.subkriteria" :key="sub.id_sk2">
                                             <th v-if="sub.subkriteria" :colspan="sub.subkriteria.length" scope="col"
                                                 class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
-                                                {{ sub.kode }}
+                                                {{  sub.kriteria  }}
                                             </th>
                                             <th v-else @click="sorting(`nilai.${sub.k_sc}`, true)" rowspan="2"
                                                 scope="col"
                                                 class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-700 uppercase cursor-pointer dark:text-gray-400">
-                                                {{ sub.kode }}
+                                                {{  sub.kriteria  }}
                                             </th>
                                         </template>
                                         <template v-for="sub in state.subkriteria" :key="sub.id_sk2">
-                                            <th v-if="sub.subkriteria" :colspan="sub.subkriteria.length" scope="col"
+                                            <th v-if="sub.subkriteria" :colspan="sub.subkriteria.length + 2" scope="col"
                                                 class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
-                                                {{ sub.kode }}
+                                                {{  sub.kriteria  }}
                                             </th>
                                             <th v-else @click="sorting(`normalisasi.${sub.k_sc}`, true)" rowspan="2"
                                                 scope="col"
                                                 class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-700 uppercase cursor-pointer dark:text-gray-400">
-                                                {{ sub.kode }}
+                                                {{  sub.kriteria  }}
                                             </th>
                                         </template>
                                     </tr>
@@ -212,7 +216,7 @@
                                                 <th @click="sorting(`nilai.${subk.k_sc}.${subkk.sk_sc}`, true)"
                                                     scope="col"
                                                     class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-700 uppercase cursor-pointer dark:text-gray-400">
-                                                    {{ subkk.kode }}
+                                                    {{  subkk.kode  }}
                                                 </th>
                                             </template>
                                         </template>
@@ -221,9 +225,19 @@
                                                 <th @click="sorting(`normalisasi.${subk.k_sc}.${subkk.sk_sc}`, true)"
                                                     scope="col"
                                                     class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-700 uppercase cursor-pointer dark:text-gray-400">
-                                                    {{ subkk.kode }}
+                                                    {{  subkk.kode  }}
                                                 </th>
                                             </template>
+                                            <th v-if="subk.subkriteria"
+                                                @click="sorting(`normalisasi.${subk.k_sc}.total`, true)" scope="col"
+                                                class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-700 uppercase cursor-pointer dark:text-gray-400">
+                                                Total
+                                            </th>
+                                            <th v-if="subk.subkriteria" @click="sorting(`new_norm.${subk.k_sc}`, true)"
+                                                scope="col"
+                                                class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-700 uppercase cursor-pointer dark:text-gray-400">
+                                                Norm
+                                            </th>
                                         </template>
                                     </tr>
                                 </thead>
@@ -232,11 +246,11 @@
                                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-600">
                                         <td
                                             class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            {{ peserta1.nim }}
+                                            {{  peserta1.nim  }}
                                         </td>
                                         <td
                                             class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                            {{ peserta1.nama }}
+                                            {{  peserta1.nama  }}
                                         </td>
                                         <template v-if="peserta1.nilai == 'nodata'">
                                             <td v-for="subkrit in state.listSubKriteria" :key="subkrit.kriteria"
@@ -249,13 +263,13 @@
                                                 <template v-if="k.subkriteria">
                                                     <td v-for="subk in k.subkriteria" :key="subk.id_sk2"
                                                         class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                                        {{ peserta1.nilai[k.k_sc][subk.sk_sc] }}
+                                                        {{  peserta1.nilai[k.k_sc][subk.sk_sc]  }}
                                                     </td>
                                                 </template>
                                                 <template v-else>
                                                     <td
                                                         class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                                        {{ peserta1.nilai[k.k_sc] }}
+                                                        {{  peserta1.nilai[k.k_sc]  }}
                                                     </td>
                                                 </template>
                                             </template>
@@ -271,20 +285,32 @@
                                                 <template v-if="k.subkriteria">
                                                     <td v-for="subk in k.subkriteria" :key="subk.id_sk2"
                                                         :class="[warna(peserta1.normalisasi[k.k_sc][subk.sk_sc]), 'px-6', 'py-4', 'text-sm', 'text-gray-500', 'whitespace-nowrap', 'dark:text-gray-400']">
-                                                        {{ peserta1.normalisasi[k.k_sc][subk.sk_sc] }}
+                                                        {{  peserta1.normalisasi[k.k_sc][subk.sk_sc]  }}
+                                                    </td>
+                                                    <td
+                                                        :class="[warna(peserta1.normalisasi[k.k_sc].total), 'px-6', 'py-4', 'text-sm', 'text-gray-500', 'whitespace-nowrap', 'dark:text-gray-400']">
+                                                        {{  peserta1.normalisasi[k.k_sc].total  }}
+                                                    </td>
+                                                    <td
+                                                        :class="[warna(peserta1.new_norm[k.k_sc]), 'px-6', 'py-4', 'text-sm', 'text-gray-500', 'whitespace-nowrap', 'dark:text-gray-400']">
+                                                        {{  peserta1.new_norm[k.k_sc]  }}
                                                     </td>
                                                 </template>
                                                 <template v-else>
                                                     <td
                                                         :class="[warna(peserta1.normalisasi[k.k_sc]), 'px-6', 'py-4', 'text-sm', 'text-gray-500', 'whitespace-nowrap', 'dark:text-gray-400']">
-                                                        {{ peserta1.normalisasi[k.k_sc] }}
+                                                        {{  peserta1.normalisasi[k.k_sc]  }}
                                                     </td>
                                                 </template>
                                             </template>
                                         </template>
                                         <td
-                                            :class="[warnaLulus(peserta1.total), 'px-6', 'py-4', 'text-sm', 'text-gray-500', 'whitespace-nowrap', 'dark:text-gray-400']">
-                                            {{ peserta1.total }}
+                                            :class="[warna(peserta1.total), 'px-6', 'py-4', 'text-sm', 'text-gray-500', 'whitespace-nowrap', 'dark:text-gray-400']">
+                                            {{  peserta1.total  }}
+                                        </td>
+                                        <td
+                                            :class="[warna(peserta1.total), 'px-6', 'py-4', 'text-sm', 'text-gray-500', 'whitespace-nowrap', 'dark:text-gray-400']">
+                                            {{  parseFloat(peserta1.total * 100).toFixed(1)  }}
                                         </td>
                                         <td v-if="peserta1.lulus == 1"
                                             class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-gray-400">
@@ -358,9 +384,10 @@ onMounted(() => {
         }).catch((err) => {
             console.log(err.response.data)
         });
-    penilaianAPI.calc()
+    penilaianAPI.index()
         .then((response) => {
             state.peserta1 = response.data.data
+            console.log(state.peserta1)
         }).catch((err) => {
             console.log(err.response.data)
         });
@@ -480,8 +507,8 @@ const sortedData = computed(() => {
     }).filter((p) => {
         return p.nim.toString().startsWith(filterCalc.bp)
     }).filter((p) => {
-        return p.total >= filterCalc.rangeNilai[0]
-            && p.total <= filterCalc.rangeNilai[1]
+        return p.total * 100 >= filterCalc.rangeNilai[0]
+            && p.total * 100 <= filterCalc.rangeNilai[1]
     }).filter(c => {
         if (filterCalc.search == '') return true;
         return c.nama.toLowerCase().indexOf(filterCalc.search.toLowerCase()) >= 0;

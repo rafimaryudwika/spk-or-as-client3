@@ -91,6 +91,8 @@
                                             }"
                                                 class="text-blue-600 hover:text-blue-900 dark:text-blue-500 dark:hover:underline">
                                                 Edit</router-link>
+                                            <a @click.prevent="destroy(kriteria.id_k1, index)" href=""
+                                                class="px-6 py-4 text-sm font-medium text-right text-red-500 whitespace-nowrap">Delete</a>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -103,28 +105,29 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import kriteriaAPI from "./../../../api/listKriteria/tahap1/kriteria1";
 import { onMounted, reactive } from 'vue'
-export default {
-    components: {},
 
-    setup() {
-        const state = reactive({
-            kriteria: []
-        })
-        onMounted(() => {
-            kriteriaAPI.index()
-                .then((response) => {
-                    state.kriteria = response.data.data
-                    console.log(state.kriteria)
-                }).catch((err) => {
+const state = reactive({
+    kriteria: []
+})
+onMounted(() => {
+    kriteriaAPI.index()
+        .then((response) => {
+            state.kriteria = response.data.data
+            console.log(state.kriteria)
+        }).catch((err) => {
 
-                });
-        })
-        return {
-            state
-        }
-    }
+        });
+})
+const destroy = (id, index) => {
+    kriteriaAPI.delete(id)
+        .then(() => {
+            state.kriteria.splice(index, 1)
+        }).catch((err) => {
+            console.log(err.response.data)
+        });
 }
+
 </script>

@@ -18,7 +18,7 @@ module.exports = {
         'shadow-lg',
     ],
 
-    darkMode: 'media',
+    darkMode: 'class',
 
     content: [],
 

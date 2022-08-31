@@ -113,10 +113,10 @@ const countByNIM = computed(() => {
 console.log(countByFakultas, countByGender, countByNIM, countByBidangFak, countByTglDaftar)
 
 const chartFakultas = reactive({
-    labels: Object.keys(countByFakultas.value),
+    labels: ['Teknik', 'Pertanian', 'Peternakan', 'Hukum', 'Ekonomi'],
     datasets: [
         {
-            data: Object.values(countByFakultas),
+            data: [30, 40, 60, 70, 5],
             backgroundColor: ['#77CEFF', '#0079AF', '#123E6B', '#97B0C4', '#A5C8ED'],
         },
     ],
