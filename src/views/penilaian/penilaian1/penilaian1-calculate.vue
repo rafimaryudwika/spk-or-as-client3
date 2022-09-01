@@ -346,8 +346,8 @@ import { onMounted, ref, reactive, computed, watchEffect } from 'vue'
 import penilaianAPI from "./../../../api/listPeserta/tahap1/peserta";
 import kriteriaAPI from "./../../../api/listKriteria/tahap1/kriteria1";
 import subKriteriaAPI from "./../../../api/listKriteria/tahap1/subkriteria1";
+import fakultas from "./../../../api/fakultas"
 import vue3Slider from "@vueform/slider"
-import http from "./../../../http-common";
 
 const state = reactive({
     peserta1: [],
@@ -391,8 +391,7 @@ onMounted(() => {
         }).catch((err) => {
             console.log(err.response.data)
         });
-    http
-        .get(`/fakultas`)
+    fakultas.index()
         .then((response) => {
             state.fakultas = response.data.data
             console.log(state.fakultas)

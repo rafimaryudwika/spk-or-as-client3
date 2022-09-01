@@ -1,4 +1,4 @@
-import http from './../../http-common.js'
+import http from './config'
 
 export default {
     index(params) {
