@@ -387,14 +387,12 @@ onMounted(() => {
     penilaianAPI.index()
         .then((response) => {
             state.peserta1 = response.data.data
-            console.log(state.peserta1)
         }).catch((err) => {
             console.log(err.response.data)
         });
     fakultas.index()
         .then((response) => {
             state.fakultas = response.data.data
-            console.log(state.fakultas)
         })
 })
 
@@ -526,9 +524,6 @@ const sortedData = computed(() => {
 const filteredData = computed(() => {
     return filterNilaiByParameters(sortedData)
 })
-
-console.log(filteredData)
-console.log(sortedData)
 
 function warna(value) {
     if (value >= 0.8) return 'text-gray-50 bg-green-400 dark:bg-green-800 dark:text-gray-100'
