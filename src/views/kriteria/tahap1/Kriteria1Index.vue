@@ -72,15 +72,15 @@
                                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-600">
                                         <td
                                             class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            {{ kriteria.id_k1 }}
+                                            {{  kriteria.id_k1  }}
                                         </td>
                                         <td
                                             class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                            {{ kriteria.kriteria }}
+                                            {{  kriteria.kriteria  }}
                                         </td>
                                         <td
                                             class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                            {{ kriteria.bobot }}
+                                            {{  kriteria.bobot  }}
                                         </td>
                                         <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
                                             <router-link :to="{
@@ -116,7 +116,6 @@ onMounted(() => {
     kriteriaAPI.index()
         .then((response) => {
             state.kriteria = response.data.data
-            console.log(state.kriteria)
         }).catch((err) => {
 
         });

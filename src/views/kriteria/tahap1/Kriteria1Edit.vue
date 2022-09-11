@@ -97,7 +97,6 @@ onMounted(() => {
             inputKriteria.kriteria = response.data.data[0].kriteria
             inputKriteria.bobot = response.data.data[0].bobot
             inputKriteria.kode = response.data.data[0].kode
-            console.log(state.kriteria)
         }).catch((err) => {
 
         });

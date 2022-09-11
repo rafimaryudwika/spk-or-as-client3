@@ -101,7 +101,6 @@ export default {
             penilaian1API.index()
                 .then((response) => {
                     state.peserta1 = response.data.data
-                    console.log(state.peserta1)
                 }).catch((err) => {
                     console.log(err.response.data)
                 });

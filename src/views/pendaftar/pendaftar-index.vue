@@ -77,27 +77,27 @@
                                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-600">
                                         <td
                                             class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            {{ pendaftar.nim }}
+                                            {{  pendaftar.nim  }}
                                         </td>
                                         <td
                                             class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                            {{ pendaftar.nama }}
+                                            {{  pendaftar.nama  }}
                                         </td>
                                         <td
                                             class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                            {{ pendaftar.gender }}
+                                            {{  pendaftar.gender  }}
                                         </td>
                                         <td
                                             class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                            {{ pendaftar.tgl_lahir }}
+                                            {{  pendaftar.tgl_lahir  }}
                                         </td>
                                         <td
                                             class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                            {{ pendaftar.fakultas }}
+                                            {{  pendaftar.fakultas  }}
                                         </td>
                                         <td
                                             class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                            {{ pendaftar.jurusan }}
+                                            {{  pendaftar.jurusan  }}
                                         </td>
                                         <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
                                             <router-link :to="{
@@ -131,7 +131,7 @@
                                         <a href="#" @click="clickPage(pages.name)"
                                             :class="[isPageActive(pages.name), 'px-3', 'py-2', 'leading-tight', 'text-gray-500', 'bg-white', 'border', 'border-gray-300', 'hover:bg-gray-100', 'hover:text-gray-700', 'dark:bg-gray-800', 'dark:border-gray-700', 'dark:text-gray-400', 'dark:hover:bg-gray-700', 'dark:hover:text-white']"
                                             :disabled="pages.isDisabled">
-                                            {{ pages.name }}</a>
+                                            {{  pages.name  }}</a>
                                     </li>
 
                                     <li>
@@ -180,7 +180,6 @@ export default {
                 .get('/pendaftar')
                 .then((response) => {
                     state.pendaftar = response.data.data
-                    console.log(state.pendaftar)
 
                 })
         })

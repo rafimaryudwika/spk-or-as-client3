@@ -105,7 +105,6 @@ onMounted(() => {
     subKriteriaAPI.show(route.params.id)
         .then((response) => {
             state.kriteria = response.data.data
-            console.log(state.kriteria)
             inputSubKriteria.sub_kriteria = response.data.data.sub_kriteria
             inputSubKriteria.kode = response.data.data.kode
             inputSubKriteria.bobot = response.data.data.bobot
