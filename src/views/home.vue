@@ -56,8 +56,7 @@
 import { reactive, ref, onMounted, computed } from 'vue';
 import { DoughnutChart, LineChart } from 'vue-chart-3';
 import { Chart, registerables } from "chart.js";
-
-import http from "./../http-common";
+import pendaftar from "./../api/pendaftar"
 
 Chart.register(...registerables);
 
@@ -66,13 +65,10 @@ const state = reactive({
 })
 
 onMounted(() => {
-    http
-        .get('/pendaftar')
+    pendaftar.index()
         .then((response) => {
             state.pendaftar = response.data.data
-            console.log(state.pendaftar)
-
-        });
+        })
 })
 
 const count = function (ary, classifier) {
