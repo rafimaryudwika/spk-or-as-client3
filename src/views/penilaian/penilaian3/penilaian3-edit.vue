@@ -5,7 +5,7 @@
                 Edit Data Penilaian Peserta
             </h1>
         </div>
-                <div class="p-2">
+        <div class="p-2">
             <div id="alert-5" class="flex p-4 bg-gray-100 rounded-lg dark:bg-gray-700" role="alert">
                 <svg aria-hidden="true" class="flex-shrink-0 w-5 h-5 text-gray-700 dark:text-gray-300"
                     fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -48,11 +48,13 @@
                                 <div v-for="(sk, index) in state.listSubKriteria" :key="index" class="mb-6">
                                     <label for="sk.k_sc"
                                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{
-                                                sk.kriteria
+                                        sk.kriteria
                                         }} </label>
                                     <input type="text" id="sk.k_sc"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         required v-model="inputPenilaian[sk.k_sc]" />
+                                    <p v-if="validation[sk.k_sc]" class="mt-2 text-sm text-red-600 dark:text-red-500">
+                                        {{ validation[sk.k_sc][0] }}</p>
                                 </div>
                                 <button type="submit"
                                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -67,101 +69,90 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import { onMounted, reactive, ref, watchEffect, computed } from 'vue'
-import http from './../../../http-common.js'
+import penilaianAPI from './../../../api/listPeserta/tahap3/peserta'
+import subKriteriaAPI from './../../../api/listKriteria/tahap3/subkriteria3'
 import { useRouter, useRoute } from 'vue-router'
 
-export default {
-    components: {},
-    setup() {
-        const state = reactive({
-            subkriteria: [],
-            peserta: [],
-            listSubKriteria: []
+const state = reactive({
+    subkriteria: [],
+    peserta: [],
+    listSubKriteria: []
+})
+let inputPenilaian = reactive({})
+watchEffect(() => {
+    //transpose dari table sub-kriteria menjadi object untuk input data
+    inputPenilaian['nim'] = "";
+    for (let i = 0; i < state.subkriteria.length; i++) {
+        const outer = state.subkriteria[i];
+        if (outer.subkriteria) {
+            for (let j = 0; j < outer.subkriteria.length; j++) {
+                const inner = outer.subkriteria[j];
+                const key = `${outer.k_sc}-${inner.sk_sc}`;
+                inputPenilaian[key] = "";
+            }
+        } else {
+            inputPenilaian[outer.k_sc] = "";
+        }
+    }
+    //transpose dari table sub-kriteria menjadi list untuk perulangan (baik untuk input maupun v-model)
+    for (let i = 0; i < state.subkriteria.length; i++) {
+        const outer = state.subkriteria[i];
+        if (outer.subkriteria) {
+            for (let j = 0; j < outer.subkriteria.length; j++) {
+                const inner = outer.subkriteria[j];
+                const kriteria = `${outer.kriteria} / ${inner.sub_kriteria}`
+                const k_sc = `${outer.k_sc}-${inner.sk_sc}`;
+                state.listSubKriteria.push({
+                    kriteria,
+                    k_sc,
+                })
+            }
+        } else {
+            state.listSubKriteria.push({
+                kriteria: outer.kriteria,
+                k_sc: outer.k_sc,
+            })
+        }
+    }
+})
+
+const route = useRoute()
+onMounted(() => {
+    subKriteriaAPI.index()
+        .then((response) => {
+            state.subkriteria = response.data.data
         })
-        let inputPenilaian = reactive({})
-        watchEffect(() => {
-            //transpose dari table sub-kriteria menjadi object untuk input data
-            inputPenilaian['nim'] = "";
+    penilaianAPI.show(route.params.id)
+        .then((response) => {
+            inputPenilaian.nim = response.data.data[0].nim
             for (let i = 0; i < state.subkriteria.length; i++) {
                 const outer = state.subkriteria[i];
                 if (outer.subkriteria) {
                     for (let j = 0; j < outer.subkriteria.length; j++) {
                         const inner = outer.subkriteria[j];
-                        const key = `${outer.k_sc}-${inner.sk_sc}`;
-                        inputPenilaian[key] = "";
+                        let props1 = `${outer.k_sc}-${inner.sk_sc}`;
+                        inputPenilaian[props1] = `${response.data.data[0].nilai[outer.k_sc][inner.sk_sc]}`
                     }
                 } else {
-                    inputPenilaian[outer.k_sc] = "";
-                }
-            }
-            //transpose dari table sub-kriteria menjadi list untuk perulangan (baik untuk input maupun v-model)
-            for (let i = 0; i < state.subkriteria.length; i++) {
-                const outer = state.subkriteria[i];
-                if (outer.subkriteria) {
-                    for (let j = 0; j < outer.subkriteria.length; j++) {
-                        const inner = outer.subkriteria[j];
-                        const kriteria = `${outer.kriteria} / ${inner.sub_kriteria}`
-                        const k_sc = `${outer.k_sc}-${inner.sk_sc}`;
-                        state.listSubKriteria.push({
-                            kriteria,
-                            k_sc,
-                        })
-                    }
-                } else {
-                    state.listSubKriteria.push({
-                        kriteria: outer.kriteria,
-                        k_sc: outer.k_sc,
-                    })
+                    let props2 = `${outer.k_sc}`;
+                    inputPenilaian[props2] = `${response.data.data[0].nilai[props2]}`
                 }
             }
         })
+})
 
-        const route = useRoute()
-        onMounted(() => {
-            http.get('/subkriteria3')
-                .then((response) => {
-                    state.subkriteria = response.data.data
-                })
-            http.get(`/penilaian3/show/${route.params.id}`)
-                .then((response) => {
-                    inputPenilaian.nim = response.data.data[0].nim
-                    for (let i = 0; i < state.subkriteria.length; i++) {
-                        const outer = state.subkriteria[i];
-                        if (outer.subkriteria) {
-                            for (let j = 0; j < outer.subkriteria.length; j++) {
-                                const inner = outer.subkriteria[j];
-                                let props1 = `${outer.k_sc}-${inner.sk_sc}`;
-                                inputPenilaian[props1] = `${response.data.data[0].nilai[outer.k_sc][inner.sk_sc]}`
-                            }
-                        } else {
-                            let props2 = `${outer.k_sc}`;
-                            inputPenilaian[props2] = `${response.data.data[0].nilai[props2]}`
-                        }
-                    }
-                })
-        })
-
-        const validation = ref([]);
-        const router = useRouter();
-        function update() {
-            http.put(`/penilaian3/${route.params.id}`, inputPenilaian)
-                .then(() => {
-                    router.push({
-                        name: 'penilaian3.index'
-                    })
-                }).catch((err) => {
-                    validation.value = err.response.data
-                });
-        }
-        return {
-            state,
-            inputPenilaian,
-            validation,
-            router,
-            update
-        }
-    },
+const validation = ref([]);
+const router = useRouter();
+function update() {
+    penilaianAPI.update(route.params.id, inputPenilaian)
+        .then(() => {
+            router.push({
+                name: 'penilaian3.index'
+            })
+        }).catch((err) => {
+            validation.value = err.response.data
+        });
 }
 </script>

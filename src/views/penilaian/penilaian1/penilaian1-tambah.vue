@@ -56,11 +56,13 @@
                                 <div v-for="(sk, index) in state.listSubKriteria" :key="index" class="mb-6">
                                     <label for="sk.k_sc"
                                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{
-                                                sk.kriteria
+                                        sk.kriteria
                                         }}</label>
                                     <input type="text" id="sk.k_sc"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         required v-model="inputPenilaian[sk.k_sc]" />
+                                    <p v-if="validation[sk.k_sc]" class="mt-2 text-sm text-red-600 dark:text-red-500">
+                                        {{ validation[sk.k_sc][0] }}</p>
                                 </div>
                                 <button type="submit"
                                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -77,7 +79,8 @@
 
 <script async setup>
 import { onMounted, reactive, ref, watchEffect, computed } from 'vue'
-import http from './../../../http-common.js'
+import penilaianAPI from './../../../api/listPeserta/tahap1/peserta'
+import subKriteriaAPI from './../../../api/listKriteria/tahap1/subkriteria1'
 import { useRouter, useRoute } from 'vue-router'
 
 const state = reactive({
@@ -88,12 +91,12 @@ const state = reactive({
 
 const route = useRoute()
 onMounted(async () => {
-    await http.get('/subkriteria1')
+    await subKriteriaAPI.index()
         .then((response) => {
             state.subkriteria = response.data.data
             // console.log(state.subkriteria)
         })
-    await http.get(`/penilaian1/show2/${route.params.id}`)
+    await penilaianAPI.show(route.params.id)
         .then((response) => {
             inputPenilaian.nim = response.data.data[0].nim
             state.peserta = response.data.data[0]
@@ -143,7 +146,7 @@ watchEffect(() => {
 const validation = ref([]);
 const router = useRouter();
 function store() {
-    http.post('/penilaian1', inputPenilaian)
+    penilaianAPI.create(inputPenilaian)
         .then(() => {
             router.push({
                 name: 'penilaian1.index'

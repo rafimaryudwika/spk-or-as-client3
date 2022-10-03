@@ -117,7 +117,6 @@ export default {
             kriteriaAPI.index()
                 .then((response) => {
                     state.kriteria = response.data.data
-                    console.log(state.kriteria)
                 }).catch((err) => {
 
                 });

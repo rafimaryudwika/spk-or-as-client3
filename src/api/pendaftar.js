@@ -1,14 +1,14 @@
-import http from './config'
+import http from 'axios'
 
 export default {
     index(params) {
-        return http.get('/pendaftar', {
+        return http.get('api/pendaftar', {
             params: params,
         })
     },
 
     show(id) {
-        return http.get('/pendaftar/' + id)
+        return http.get('api/pendaftar/' + id)
     },
 
     // update( id, data ){

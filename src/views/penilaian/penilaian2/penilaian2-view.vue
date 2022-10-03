@@ -44,14 +44,14 @@
                                             <img class="w-full h-auto mx-auto" src="" alt="">
                                         </div>
                                         <h1 class="my-1 text-xl font-bold leading-8 text-gray-900 dark:text-gray-200">{{
-                                             state.pendaftar?.nama 
-                                            }}</h1>
+                                        state.pendaftar?.nama
+                                        }}</h1>
                                         <h3 class="leading-6 text-gray-600 dark:text-gray-400 font-lg text-semibold">
                                             Fakultas
-                                            {{  state.pendaftar?.detail?.fakultas  }}</h3>
+                                            {{ state.pendaftar?.detail?.fakultas }}</h3>
                                         <h3 class="leading-6 text-gray-600 dark:text-gray-400 font-lg text-semibold">
                                             Jurusan
-                                            {{  state.pendaftar?.detail?.jurusan  }}</h3>
+                                            {{ state.pendaftar?.detail?.jurusan }}</h3>
                                         <p class="text-sm leading-6 text-gray-500 hover:text-gray-600"></p>
                                         <!--  <ul
                                             class="px-3 py-2 mt-3 text-gray-600 bg-gray-100 divide-y rounded shadow-sm dark:bg-gray-800 dark:text-gray-500 hover:text-gray-700 hover:dark:text-gray-400 hover:shadow">
@@ -93,42 +93,42 @@
                                             <div class="grid text-sm md:grid-cols-2">
                                                 <div class="grid grid-cols-2">
                                                     <div class="px-4 py-2 font-semibold">Panggilan</div>
-                                                    <div class="px-4 py-2">{{  state.pendaftar?.detail?.nama_panggilan 
-                                                        }}
+                                                    <div class="px-4 py-2">{{ state.pendaftar?.detail?.nama_panggilan
+                                                    }}
                                                     </div>
                                                 </div>
                                                 <div class="grid grid-cols-2">
                                                     <div class="px-4 py-2 font-semibold">NIM</div>
-                                                    <div class="px-4 py-2">{{  state.pendaftar?.nim  }}</div>
+                                                    <div class="px-4 py-2">{{ state.pendaftar?.nim }}</div>
                                                 </div>
                                                 <div class="grid grid-cols-2">
                                                     <div class="px-4 py-2 font-semibold">Gender</div>
-                                                    <div class="px-4 py-2">{{  state.pendaftar?.detail?.gender  }}</div>
+                                                    <div class="px-4 py-2">{{ state.pendaftar?.detail?.gender }}</div>
                                                 </div>
                                                 <div class="grid grid-cols-2">
                                                     <div class="px-4 py-2 font-semibold">No Telepon</div>
-                                                    <div class="px-4 py-2">0{{  state.pendaftar?.detail?.nomor_hp  }}
+                                                    <div class="px-4 py-2">0{{ state.pendaftar?.detail?.nomor_hp }}
                                                     </div>
                                                 </div>
                                                 <div class="grid grid-cols-2">
                                                     <div class="px-4 py-2 font-semibold">Email.</div>
                                                     <div class="px-4 py-2">
                                                         <a class="text-blue-800 dark:text-blue-500" href="mailto:">{{
-                                                             state.pendaftar?.detail?.e_mail 
-                                                            }}</a>
+                                                        state.pendaftar?.detail?.e_mail
+                                                        }}</a>
                                                     </div>
                                                 </div>
                                                 <div class="grid grid-cols-2">
                                                     <div class="px-4 py-2 font-semibold">Alamat di Padang</div>
-                                                    <div class="px-4 py-2">{{  state.pendaftar?.detail?.alamat_di_padang 
-                                                        }}
+                                                    <div class="px-4 py-2">{{ state.pendaftar?.detail?.alamat_di_padang
+                                                    }}
                                                     </div>
                                                 </div>
                                                 <div class="grid grid-cols-2">
                                                     <div class="px-4 py-2 font-semibold">Tempat/Tanggal Lahir</div>
-                                                    <div class="px-4 py-2">{{  state.pendaftar?.detail?.tempat_lahir  }} /
+                                                    <div class="px-4 py-2">{{ state.pendaftar?.detail?.tempat_lahir }} /
                                                         {{
-                                                         state.pendaftar?.detail?.tanggal_lahir 
+                                                        state.pendaftar?.detail?.tanggal_lahir
                                                         }}
                                                     </div>
                                                 </div>
@@ -218,7 +218,7 @@
 
 <script setup>
 import { reactive, onMounted } from 'vue'
-import http from "./../../../http-common";
+import penilaianAPI from './../../../api/listPeserta/tahap2/peserta'
 import { useRouter, useRoute } from 'vue-router'
 
 const state = reactive({
@@ -226,8 +226,7 @@ const state = reactive({
 })
 const route = useRoute()
 onMounted(() => {
-    http
-        .get(`/penilaian2/show/${route.params.id}`)
+    penilaianAPI.show(route.params.id)
         .then((response) => {
             state.pendaftar = response.data.data[0]
             console.log(state.pendaftar)
@@ -237,4 +236,5 @@ onMounted(() => {
 </script>
 
 <style>
+
 </style>

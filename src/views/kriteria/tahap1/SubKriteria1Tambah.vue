@@ -49,9 +49,11 @@
                                     <select id="kriteria" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500
                                     required " v-model="inputSubKriteria.id_k1">
                                         <option v-for="krit in state.kriteria" :key="krit.id_k1" :value="krit.id_k1">{{
-                                             krit.kriteria 
-                                            }}</option>
+                                        krit.kriteria
+                                        }}</option>
                                     </select>
+                                    <p v-if="validation.id_k1" class="mt-2 text-sm text-red-600 dark:text-red-500">
+                                        {{ validation.id_k1[0] }}</p>
                                 </div>
                                 <div class="mb-6">
                                     <label for="subkriteria"
@@ -60,6 +62,9 @@
                                     <input type="text" id="subkriteria"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         required v-model="inputSubKriteria.sub_kriteria" />
+                                    <p v-if="validation.sub_kriteria"
+                                        class="mt-2 text-sm text-red-600 dark:text-red-500">
+                                        {{ validation.sub_kriteria[0] }}</p>
                                 </div>
                                 <div class="mb-6">
                                     <label for="kode"
@@ -67,6 +72,8 @@
                                     <input type="text" id="subkriteria"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         required v-model="inputSubKriteria.kode" />
+                                    <p v-if="validation.kode" class="mt-2 text-sm text-red-600 dark:text-red-500">
+                                        {{ validation.kode[0] }}</p>
                                 </div>
                                 <div class="mb-6">
                                     <label for="bobot"
@@ -75,6 +82,8 @@
                                     <input type="text" id="bobot"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         required v-model="inputSubKriteria.bobot" />
+                                    <p v-if="validation.bobot" class="mt-2 text-sm text-red-600 dark:text-red-500">
+                                        {{ validation.bobot[0] }}</p>
                                 </div>
                                 <button type="submit"
                                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">

@@ -106,8 +106,6 @@ const countByNIM = computed(() => {
     });
 })
 
-console.log(countByFakultas, countByGender, countByNIM, countByBidangFak, countByTglDaftar)
-
 const chartFakultas = reactive({
     labels: ['Teknik', 'Pertanian', 'Peternakan', 'Hukum', 'Ekonomi'],
     datasets: [
@@ -243,4 +241,5 @@ const optionsGrafikPendaftar = ref({
 </script>
 
 <style>
+
 </style>

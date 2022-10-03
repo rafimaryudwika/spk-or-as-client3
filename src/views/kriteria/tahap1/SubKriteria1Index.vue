@@ -134,7 +134,6 @@ onMounted(() => {
     subKriteriaAPI.index()
         .then((response) => {
             state.subkriteria = response.data.data
-            console.log(state.subkriteria)
         }).catch((err) => {
 
         });
@@ -176,7 +175,5 @@ const destroy = (id, index) => {
             console.log(err.response.data)
         });
 }
-
-console.log(state.listSubKriteria)
 
 </script>

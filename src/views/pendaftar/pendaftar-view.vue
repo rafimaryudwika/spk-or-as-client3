@@ -44,7 +44,7 @@
                                             <img class="w-full h-auto mx-auto" src="" alt="">
                                         </div>
                                         <h1 class="my-1 text-xl font-bold leading-8 text-gray-900 dark:text-gray-200">{{
-                                                state.pendaftar.nama
+                                        state.pendaftar.nama
                                         }}</h1>
                                         <h3 class="leading-6 text-gray-600 dark:text-gray-400 font-lg text-semibold">
                                             Fakultas
@@ -113,7 +113,7 @@
                                                     <div class="px-4 py-2 font-semibold">Email.</div>
                                                     <div class="px-4 py-2">
                                                         <a class="text-blue-800 dark:text-blue-500" href="mailto:">{{
-                                                                state.pendaftar.email
+                                                        state.pendaftar.email
                                                         }}</a>
                                                     </div>
                                                 </div>
@@ -124,7 +124,7 @@
                                                 <div class="grid grid-cols-2">
                                                     <div class="px-4 py-2 font-semibold">Tempat/Tanggal Lahir</div>
                                                     <div class="px-4 py-2">{{ state.pendaftar.tempat_lahir }} / {{
-                                                            state.pendaftar.tgl_lahir
+                                                    state.pendaftar.tgl_lahir
                                                     }}
                                                     </div>
                                                 </div>
@@ -144,36 +144,27 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import { reactive, onMounted } from 'vue'
-import http from "./../../http-common.js";
+import pendaftarAPI from "./../../api/pendaftar";
 import { useRouter, useRoute } from 'vue-router'
-export default {
-    setup() {
-        const state = reactive({
-            pendaftar: [],
-            date: []
+
+const state = reactive({
+    pendaftar: [],
+    date: []
+})
+const route = useRoute()
+onMounted(() => {
+    pendaftarAPI
+        .show(route.params.id)
+        .then((response) => {
+            state.pendaftar = response.data.data
+            state.date = response.data.data.tgl_daftar.slice(0, 10)
+
         })
-        const route = useRoute()
-        onMounted(() => {
-            http
-                .get(`/pendaftar/${route.params.id}`)
-                .then((response) => {
-                    state.pendaftar = response.data.data
-                    state.date = response.data.data.tgl_daftar.slice(0, 10)
-                    console.log(state.pendaftar)
-
-                })
-        })
-
-
-        return {
-            state,
-            route
-        }
-    }
-}
+})
 </script>
 
 <style>
+
 </style>

@@ -56,7 +56,7 @@
                                 <div v-for="(sk, index) in state.listSubKriteria" :key="index" class="mb-6">
                                     <label for="sk.k_sc"
                                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{
-                                                sk.kriteria
+                                        sk.kriteria
                                         }} </label>
                                     <input type="text" id="sk.k_sc"
                                         class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -87,9 +87,9 @@
 
 <script>
 import { onMounted, reactive, ref, watchEffect, computed } from 'vue'
-import http from './../../../http-common.js'
 import { useRouter, useRoute } from 'vue-router'
 import penilaianAPI from "./../../../api/listPeserta/tahap2/peserta";
+import subKriteriaAPI from "./../../../api/listKriteria/tahap2/subkriteria2";
 
 
 export default {
@@ -140,20 +140,15 @@ export default {
                     })
                 }
             }
-            console.log(state.listSubKriteria)
         })
-        console.log(outputPenilaian)
-
         const route = useRoute()
         onMounted(() => {
-            http.get('/subkriteria2')
+            subKriteriaAPI.index()
                 .then((response) => {
                     state.subkriteria = response.data.data
-
                 })
-            http.get(`/penilaian2/show/${route.params.id}`)
+            penilaianAPI.show(route.params.id)
                 .then((response) => {
-
                     outputPenilaian.nim = response.data.data[0].nim
                     outputPenilaian.nama = response.data.data[0].nama
                     for (let i = 0; i < state.subkriteria.length; i++) {

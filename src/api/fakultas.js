@@ -1,8 +1,8 @@
-import http from './config'
+import http from 'axios'
 
 export default {
     index(params) {
-        return http.get('/fakultas', {
+        return http.get('api/fakultas', {
             params: params,
         })
     },

@@ -1,9 +1,15 @@
-import { createApp } from 'vue';
-import App from './App.vue';
+import { createApp } from 'vue'
+import App from './App.vue'
 import router from './router'
-import store from './store'
-import './index.css';
-import 'flowbite';
+import { createPinia } from 'pinia'
+import './index.css'
+import 'flowbite'
+import axios from 'axios'
 
+axios.defaults.withCredentials = true
+axios.defaults.baseURL = 'http://localhost:8000/'
 
-createApp(App).use(router).use(store).mount('#app');
+const app = createApp(App)
+const store = createPinia()
+
+app.use(store).use(router).mount('#app')

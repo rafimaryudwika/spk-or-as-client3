@@ -132,7 +132,6 @@ onMounted(() => {
     subKriteriaAPI.index()
         .then((response) => {
             state.subkriteria = response.data.data
-            console.log(state.subkriteria)
         }).catch((err) => {
 
         });
@@ -165,7 +164,5 @@ watchEffect(() => {
         }
     }
 })
-
-console.log(state.listSubKriteria)
 
 </script>

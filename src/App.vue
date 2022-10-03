@@ -1,12 +1,11 @@
 <template>
-    <div class="relative min-h-screen bg-white md:flex dark:bg-gray-800">
-        <SideBar />
-        <router-view v-slot="{ Component }">
-            <transition name="fade" mode="out-in">
-                <Component :is="Component" />
-            </transition>
-        </router-view>
-    </div>
+
+    <router-view v-slot="{ Component }">
+        <transition name="fade" mode="out-in">
+            <Component :is="Component" />
+        </transition>
+    </router-view>
+
 </template>
 
 <script>
