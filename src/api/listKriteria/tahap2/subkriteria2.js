@@ -1,25 +1,25 @@
-import http from './../../config'
+import http from 'axios'
 
 export default {
     index(params) {
-        return http.get('/subkriteria2', {
+        return http.get('api/subkriteria2', {
             params: params,
         })
     },
 
     show(id) {
-        return http.get('/subkriteria2/' + id)
+        return http.get('api/subkriteria2/' + id)
     },
 
     update(id, data) {
-        return http.put('/subkriteria2/' + id, data)
+        return http.put('api/subkriteria2/' + id, data)
     },
 
     create(data) {
-        return http.post('/subkriteria2', data)
+        return http.post('api/subkriteria2', data)
     },
 
     delete(id) {
-        return http.delete('/subkriteria2/' + id)
+        return http.delete('api/subkriteria2/' + id)
     },
 }

@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import auth from '../api/auth'
+import axios from 'axios'
 import { ref } from 'vue'
 
 export const useAuth = defineStore('auth-store', () => {
@@ -22,7 +23,6 @@ export const useAuth = defineStore('auth-store', () => {
             await auth.csrf()
             await auth.login(credentials)
             getUser()
-            console.log(user.value)
         } catch (err) {
             user.value = null
             console.error('Error loading new arrivals:', err)
@@ -34,7 +34,6 @@ export const useAuth = defineStore('auth-store', () => {
         try {
             await auth.logout()
             user.value = null
-            console.log(user.value)
         } catch (err) {
             console.error('Error loading new arrivals:', err)
             return err
@@ -45,7 +44,6 @@ export const useAuth = defineStore('auth-store', () => {
         try {
             const response = await auth.user()
             user.value = response.data
-            console.log(user.value)
             return response.data
         } catch (err) {
             console.error('Error loading new arrivals:', err)

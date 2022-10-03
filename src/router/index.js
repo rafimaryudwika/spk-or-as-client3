@@ -345,7 +345,9 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
     if (to.meta.requireAuth) {
         const auth = useAuth()
-        await auth.getUser()
+        if (auth.user === null) {
+            await auth.getUser()
+        }
         if (auth.user) {
             next()
         } else {
@@ -357,7 +359,9 @@ router.beforeEach(async (to, from, next) => {
 
     if (to.meta.authPage) {
         const auth = useAuth()
-        await auth.getUser()
+        if (auth.user === null) {
+            await auth.getUser()
+        }
         if (!auth.user) {
             next()
         } else {

@@ -5,13 +5,13 @@ export default {
         return http.get('/sanctum/csrf-cookie')
     },
     login(data) {
-        return http.post('/api/login', data)
+        return http.post('/login', data)
     },
     register(data) {
-        return http.post('/api/register', data)
+        return http.post('/register', data)
     },
     logout() {
-        return http.post('/api/logout')
+        return http.post('/logout')
     },
     user() {
         return http.get('/api/profile')

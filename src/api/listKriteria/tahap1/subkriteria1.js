@@ -1,4 +1,4 @@
-import http from './../../config'
+import http from 'axios'
 
 export default {
     index(params) {

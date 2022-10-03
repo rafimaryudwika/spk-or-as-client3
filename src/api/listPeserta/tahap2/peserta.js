@@ -1,39 +1,39 @@
-import http from './../../config'
+import http from 'axios'
 
 export default {
     index(params) {
-        return http.get('/penilaian2', {
+        return http.get('api/penilaian2', {
             params: params,
         })
     },
 
     calc(params) {
-        return http.get('/penilaian2/calculate', {
+        return http.get('api/penilaian2/calculate', {
             params: params,
         })
     },
 
     lulus(id, data) {
-        return http.put('/penilaian2/lulus/' + id, data)
+        return http.put('api/penilaian2/lulus/' + id, data)
     },
 
     show(id) {
-        return http.get('/penilaian2/show/' + id)
+        return http.get('api/penilaian2/show/' + id)
     },
 
     import() {
-        return http.post('/penilaian2/import')
+        return http.post('api/penilaian2/import')
     },
 
     update(id, data) {
-        return http.put('/penilaian2/' + id, data)
+        return http.put('api/penilaian2/' + id, data)
     },
 
     create(data) {
-        return http.post('/penilaian2', data)
+        return http.post('api/penilaian2', data)
     },
 
     delete(id) {
-        return axios.delete('/penilaian2/' + id)
+        return axios.delete('api/penilaian2/' + id)
     },
 }
