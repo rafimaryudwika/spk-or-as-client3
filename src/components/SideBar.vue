@@ -261,9 +261,9 @@ export default {
 
       const logout = async () => {
          await auth.logout()
-         // router.replace({
-         //    name: 'login'
-         // })
+         router.replace({
+            name: 'login'
+         })
       }
       return { logout }
    }

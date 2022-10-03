@@ -32,7 +32,7 @@ export const useAuth = defineStore('auth-store', () => {
 
     const logout = async function () {
         try {
-            // await auth.logout()
+            await auth.logout()
             user.value = null
             console.log(user.value)
         } catch (err) {
