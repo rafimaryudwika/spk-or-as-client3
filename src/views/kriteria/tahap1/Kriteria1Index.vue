@@ -39,7 +39,7 @@
                 <div class="overflow-y-auto sm:-mx-6 lg:-mx-0">
                     <div class="py-2 inline-clip sm:px-6 lg:px-4">
                         <div class="sm:rounded-lg">
-                            <div class="col-12">
+                            <div v-if="role === 'admin'||role ==='panitia'" class="col-12">
                                 <router-link :to="{
                                     name: 'kriteria1.tambah',
                                 }" type="button"
@@ -72,17 +72,18 @@
                                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-600">
                                         <td
                                             class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            {{  kriteria.id_k1  }}
+                                            {{ kriteria.id_k1 }}
                                         </td>
                                         <td
                                             class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                            {{  kriteria.kriteria  }}
+                                            {{ kriteria.kriteria }}
                                         </td>
                                         <td
                                             class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                            {{  kriteria.bobot  }}
+                                            {{ kriteria.bobot }}
                                         </td>
-                                        <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
+                                        <td v-if="role === 'admin'||role ==='panitia'"
+                                            class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
                                             <router-link :to="{
                                                 name: 'kriteria1.edit',
                                                 params: {
@@ -107,10 +108,17 @@
 
 <script setup>
 import kriteriaAPI from "./../../../api/listKriteria/tahap1/kriteria1";
-import { onMounted, reactive } from 'vue'
+import { onMounted, reactive, computed } from 'vue'
+import { useAuth } from './../../../store/auth'
 
 const state = reactive({
     kriteria: []
+})
+
+const auth = useAuth();
+
+const role = computed(() => {
+    return auth.role
 })
 onMounted(() => {
     kriteriaAPI.index()

@@ -30,6 +30,9 @@ module.exports = {
                 purple: colors.violet,
                 gray: colors.neutral,
             },
+            spacing: {
+                'h-custom': '90hv',
+            },
         },
     },
     plugins: [require('flowbite/plugin'), require('@vueform/slider/tailwind')],

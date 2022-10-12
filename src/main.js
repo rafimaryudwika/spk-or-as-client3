@@ -6,7 +6,7 @@ import './index.css'
 import 'flowbite'
 import axios from 'axios'
 
-axios.defaults.withCredentials = true
+axios.defaults.withCredentials = true //penyebab menu dropdown tidak berfungsi
 axios.defaults.baseURL = 'http://localhost:8000/'
 
 const app = createApp(App)

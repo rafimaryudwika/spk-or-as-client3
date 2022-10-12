@@ -25,6 +25,45 @@ const routes = [
                 },
             },
             {
+                path: '/users',
+                name: 'users.index',
+                component: () => import('../views/auth/UserManager.vue'),
+                beforeEnter: (to, from, next) => {
+                    const auth = useAuth()
+                    if (auth.role === 'admin') {
+                        next()
+                    } else {
+                        next(from)
+                    }
+                },
+            },
+            {
+                path: '/users/create',
+                name: 'users.create',
+                component: () => import('../views/auth/CreateUser.vue'),
+                beforeEnter: (to, from, next) => {
+                    const auth = useAuth()
+                    if (auth.role === 'admin') {
+                        next()
+                    } else {
+                        next(from)
+                    }
+                },
+            },
+            {
+                path: 'users/edit/:id',
+                name: 'users.edit',
+                component: () => import('../views/auth/EditUser.vue'),
+                beforeEnter: (to, from, next) => {
+                    const auth = useAuth()
+                    if (auth.role === 'admin') {
+                        next()
+                    } else {
+                        next(from)
+                    }
+                },
+            },
+            {
                 path: '/pendaftar',
                 name: 'pendaftar.index',
                 component: () =>

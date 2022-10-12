@@ -5,7 +5,7 @@
                 Data Sub-Kriteria Tahap 3
             </h1>
         </div>
-                <div class="p-2">
+        <div class="p-2">
             <div id="alert-5" class="flex p-4 bg-gray-100 rounded-lg dark:bg-gray-700" role="alert">
                 <svg aria-hidden="true" class="flex-shrink-0 w-5 h-5 text-gray-700 dark:text-gray-300"
                     fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -43,7 +43,7 @@
                 <div class="overflow-y-auto sm:-mx-6 lg:-mx-0">
                     <div class="py-2 inline-clip sm:px-6 lg:px-4">
                         <div class="sm:rounded-lg">
-                            <div class="col-12">
+                            <div v-if="role === 'admin'||role ==='panitia'" class="col-12">
                                 <router-link :to="{
                                     name: 'subkriteria3.tambah',
                                 }" type="button"
@@ -98,7 +98,8 @@
                                             class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
                                             {{ sk.bobot }}
                                         </td>
-                                        <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
+                                        <td v-if="role === 'admin'||role ==='panitia'"
+                                            class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
                                             <router-link :to="{
                                                 name: 'subkriteria3.edit',
                                                 params: {
@@ -107,6 +108,8 @@
                                             }"
                                                 class="text-blue-600 hover:text-blue-900 dark:text-blue-500 dark:hover:underline">
                                                 Edit</router-link>
+                                            <a @click.prevent="destroy(sk.id_sk3, index)" href=""
+                                                class="px-6 py-4 text-sm font-medium text-right text-red-500 whitespace-nowrap">Delete</a>
                                         </td>
                                     </tr>
 
@@ -122,7 +125,8 @@
 
 <script setup>
 import subKriteriaAPI from "./../../../api/listKriteria/tahap3/subkriteria3";
-import { onMounted, reactive, watchEffect } from 'vue'
+import { onMounted, reactive, watchEffect, computed } from 'vue'
+import { useAuth } from './../../../store/auth'
 
 const state = reactive({
     subkriteria: [],
@@ -132,7 +136,6 @@ onMounted(() => {
     subKriteriaAPI.index()
         .then((response) => {
             state.subkriteria = response.data.data
-            console.log(state.subkriteria)
         }).catch((err) => {
 
         });
@@ -166,6 +169,19 @@ watchEffect(() => {
     }
 })
 
-console.log(state.listSubKriteria)
+const auth = useAuth();
+
+const role = computed(() => {
+    return auth.role
+})
+
+const destroy = (id, index) => {
+    subKriteriaAPI.delete(id)
+        .then(() => {
+            state.subkriteria.splice(index, 1)
+        }).catch((err) => {
+            console.log(err.response.data)
+        });
+}
 
 </script>

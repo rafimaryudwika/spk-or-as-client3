@@ -43,7 +43,7 @@
                 <div class="overflow-y-auto sm:-mx-6 lg:-mx-0">
                     <div class="py-2 inline-clip sm:px-6 lg:px-4">
                         <div class="sm:rounded-lg">
-                            <div class="col-12">
+                            <div v-if="role === 'admin'||role ==='panitia'" class="col-12">
                                 <router-link :to="{
                                     name: 'subkriteria1.tambah',
                                 }" type="button"
@@ -98,7 +98,8 @@
                                             class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
                                             {{ sk.bobot }}
                                         </td>
-                                        <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
+                                        <td v-if="role === 'admin'||role ==='panitia'"
+                                            class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
                                             <router-link :to="{
                                                 name: 'subkriteria1.edit',
                                                 params: {
@@ -124,7 +125,8 @@
 
 <script setup>
 import subKriteriaAPI from "./../../../api/listKriteria/tahap1/subkriteria1";
-import { onMounted, reactive, watchEffect } from 'vue'
+import { onMounted, reactive, watchEffect, computed } from 'vue'
+import { useAuth } from './../../../store/auth'
 
 const state = reactive({
     subkriteria: [],
@@ -165,6 +167,12 @@ watchEffect(() => {
             })
         }
     }
+})
+
+const auth = useAuth();
+
+const role = computed(() => {
+    return auth.role
 })
 
 const destroy = (id, index) => {

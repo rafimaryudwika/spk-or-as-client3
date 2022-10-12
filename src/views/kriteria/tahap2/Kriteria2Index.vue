@@ -39,7 +39,7 @@
                 <div class="overflow-y-auto sm:-mx-6 lg:-mx-0">
                     <div class="py-2 inline-clip sm:px-6 lg:px-4">
                         <div class="sm:rounded-lg">
-                            <div class="col-12">
+                            <div v-if="role === 'admin'||role ==='panitia'" class="col-12">
                                 <router-link :to="{
                                     name: 'kriteria2.tambah',
                                 }" type="button"
@@ -82,7 +82,8 @@
                                             class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
                                             {{ kriteria.bobot }}
                                         </td>
-                                        <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
+                                        <td v-if="role === 'admin'||role ==='panitia'"
+                                            class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
                                             <router-link :to="{
                                                 name: 'kriteria2.edit',
                                                 params: {
@@ -91,6 +92,8 @@
                                             }"
                                                 class="text-blue-600 hover:text-blue-900 dark:text-blue-500 dark:hover:underline">
                                                 Edit</router-link>
+                                            <a @click.prevent="destroy(kriteria.id_k2, index)" href=""
+                                                class="px-6 py-4 text-sm font-medium text-right text-red-500 whitespace-nowrap">Delete</a>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -103,27 +106,35 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import kriteriaAPI from "./../../../api/listKriteria/tahap2/kriteria2";
-import { onMounted, reactive } from 'vue'
-export default {
-    components: {},
+import { onMounted, reactive, computed } from 'vue'
+import { useAuth } from './../../../store/auth'
 
-    setup() {
-        const state = reactive({
-            kriteria: []
-        })
-        onMounted(() => {
-            kriteriaAPI.index()
-                .then((response) => {
-                    state.kriteria = response.data.data
-                }).catch((err) => {
+const state = reactive({
+    kriteria: []
+})
 
-                });
-        })
-        return {
-            state
-        }
-    }
+const auth = useAuth();
+
+const role = computed(() => {
+    return auth.role
+})
+onMounted(() => {
+    kriteriaAPI.index()
+        .then((response) => {
+            state.kriteria = response.data.data
+        }).catch((err) => {
+
+        });
+})
+const destroy = (id, index) => {
+    kriteriaAPI.delete(id)
+        .then(() => {
+            state.kriteria.splice(index, 1)
+        }).catch((err) => {
+            console.log(err.response.data)
+        });
 }
+
 </script>

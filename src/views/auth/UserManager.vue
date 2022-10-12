@@ -2,7 +2,7 @@
     <div class="flex-1 bg-white dark:bg-gray-800">
         <div class="col-6">
             <h1 class="px-6 py-6 text-3xl font-extrabold dark:text-gray-200">
-                Data Sub-Kriteria Tahap 2
+                Kelola Pengguna
             </h1>
         </div>
         <div class="p-2">
@@ -15,15 +15,11 @@
                 </svg>
                 <span class="sr-only">Info</span>
                 <div class="ml-3 text-sm font-medium text-gray-700 dark:text-gray-300">
-                    Halaman ini berfungsi untuk mengelola sub-kriteria untuk penilaian utama masing-masing peserta,
-                    sebelum menambahkan sub-kriteria maka diwajibkan menambahkan kriteria terlebih dahulu.<br>
-                    Jika kriteria-kriteria sudah ditentukan, maka sub-kriteria dapat ditambahkan namun biasanya
-                    sub-kriteria default (namanya menyesuaikan kriteria) dibikin secara otomatis setelah kriteria
-                    dibuat.<br> Jika sub-kriteria
-                    sudah ditambahkan klik tombol <b>Tambah</b> dibawah, maka sub-kriteria dapat diedit dengan klik
-                    tombol <b>Edit</b>.<br> Untuk menghapus sub-kriteria, silahkan klik tombol <b>Hapus</b> namun
-                    pastikan
-                    sub-kriteria belum digunakan untuk penilaian agar sub-kriteria dapat dihapus.
+                    Halaman ini berfungsi untuk mengelola kriteria untuk penilaian Sistem Pendukung Keputusan.<br>
+                    Untuk memulai penilaian dan pengambilan keputusan, maka tambahkan kriteria dengan klik tombol
+                    <b>Tambah</b> dibawah.<br>
+                    Jika kriteria sudah ditambah maka pengguna dapat mengisi nilai kriteria tersebut dan jika perlu
+                    pengguna bisa mengedit kriteria dengan klik <b>Edit</b> di samping kriteria yang mau diedit.
                 </div>
                 <button type="button"
                     class="ml-auto -mx-1.5 -my-1.5 bg-gray-100 text-gray-500 rounded-lg focus:ring-2 focus:ring-gray-400 p-1.5 hover:bg-gray-200 inline-flex h-8 w-8 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white"
@@ -43,9 +39,9 @@
                 <div class="overflow-y-auto sm:-mx-6 lg:-mx-0">
                     <div class="py-2 inline-clip sm:px-6 lg:px-4">
                         <div class="sm:rounded-lg">
-                            <div v-if="role === 'admin'||role ==='panitia'" class="col-12">
+                            <div v-if="role === 'admin'" class="col-12">
                                 <router-link :to="{
-                                    name: 'subkriteria2.tambah',
+                                    name: 'users.create',
                                 }" type="button"
                                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                                     Tambah</router-link>
@@ -57,18 +53,17 @@
                                             class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
                                             Kode
                                         </th>
-
                                         <th scope="col"
                                             class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
-                                            Subkriteria
+                                            Nama
                                         </th>
                                         <th scope="col"
                                             class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
-                                            Kriteria
+                                            E-Mail
                                         </th>
                                         <th scope="col"
                                             class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
-                                            Bobot
+                                            Role
                                         </th>
                                         <th scope="col" class="relative px-6 py-3">
                                             <span class="sr-only">Aksi</span>
@@ -77,42 +72,38 @@
                                 </thead>
                                 <tbody>
                                     <!-- Product 1 -->
-
-                                    <tr v-for="sk in state.listSubKriteria" :key="sk.id_sk2"
+                                    <tr v-for="users in state.users" :key="users.id"
                                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-600">
                                         <td
                                             class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            {{ sk.id_sk2 }}
+                                            {{ users.id }}
                                         </td>
-                                        <td
-                                            class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            {{ sk.subkriteria }}
-                                        </td>
-
                                         <td
                                             class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                            {{ sk.kriteria }}
+                                            {{ users.name }}
                                         </td>
-
                                         <td
                                             class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                            {{ sk.bobot }}
+                                            {{ users.email }}
                                         </td>
-                                        <td v-if="role === 'admin'||role ==='panitia'"
+                                        <td
+                                            class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
+                                            {{ users.user_role.role }}
+                                        </td>
+                                        <td v-if="role === 'admin'"
                                             class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
                                             <router-link :to="{
-                                                name: 'subkriteria2.edit',
+                                                name: 'users.edit',
                                                 params: {
-                                                    id: sk.id_sk2,
+                                                    id: users.id,
                                                 },
                                             }"
                                                 class="text-blue-600 hover:text-blue-900 dark:text-blue-500 dark:hover:underline">
                                                 Edit</router-link>
-                                            <a @click.prevent="destroy(sk.id_sk2, index)" href=""
+                                            <a @click.prevent="destroy(users.id, index)" href=""
                                                 class="px-6 py-4 text-sm font-medium text-right text-red-500 whitespace-nowrap">Delete</a>
                                         </td>
                                     </tr>
-
                                 </tbody>
                             </table>
                         </div>
@@ -124,49 +115,12 @@
 </template>
 
 <script setup>
-import subKriteriaAPI from "./../../../api/listKriteria/tahap2/subkriteria2";
-import { onMounted, reactive, watchEffect, computed } from 'vue'
-import { useAuth } from './../../../store/auth'
+import userAPI from "./../../api/users";
+import { onMounted, reactive, computed } from 'vue'
+import { useAuth } from './../../store/auth'
 
 const state = reactive({
-    subkriteria: [],
-    listSubKriteria: []
-})
-onMounted(() => {
-    subKriteriaAPI.index()
-        .then((response) => {
-            state.subkriteria = response.data.data
-        }).catch((err) => {
-
-        });
-})
-
-watchEffect(() => {
-    for (let i = 0; i < state.subkriteria.length; i++) {
-        const outer = state.subkriteria[i];
-        if (outer.subkriteria) {
-            for (let j = 0; j < outer.subkriteria.length; j++) {
-                const inner = outer.subkriteria[j];
-                const id_sk2 = `${inner.id_sk2}`
-                const kriteria = `${outer.kriteria}`
-                const subkriteria = `${inner.sub_kriteria}`
-                const bobot = `${inner.bobot}`
-                state.listSubKriteria.push({
-                    id_sk2,
-                    kriteria,
-                    subkriteria,
-                    bobot
-                })
-            }
-        } else {
-            state.listSubKriteria.push({
-                id_sk2: outer.id_sk2,
-                kriteria: outer.kriteria,
-                subkriteria: outer.kriteria,
-                bobot: outer.bobot_sk
-            })
-        }
-    }
+    users: []
 })
 
 const auth = useAuth();
@@ -174,11 +128,18 @@ const auth = useAuth();
 const role = computed(() => {
     return auth.role
 })
-
+onMounted(() => {
+    userAPI.index()
+        .then((response) => {
+            state.users = response.data.data
+        }).catch((err) => {
+            console.log(err.response.data)
+        });
+})
 const destroy = (id, index) => {
-    subKriteriaAPI.delete(id)
+    userAPI.delete(id)
         .then(() => {
-            state.subkriteria.splice(index, 1)
+            state.users.splice(index, 1)
         }).catch((err) => {
             console.log(err.response.data)
         });
