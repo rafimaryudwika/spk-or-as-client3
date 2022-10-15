@@ -32,9 +32,12 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-3">
+        <div class="grid max-h-full grid-cols-3">
             <div class="m-2 col-6">
-                <DoughnutChart :chartData="chartFakultas" :options="optionsFakultas" />
+                <BarChart :chartData="chartFakultas" :options="optionsFakultas" />
+            </div>
+            <div class="col-span-2 m-2 col-6">
+                <LineChart :chartData="chartGrafikPendaftar" :options="optionsGrafikPendaftar" />
             </div>
             <div class="m-2 col-6">
                 <DoughnutChart :chartData="chartGender" :options="optionsGender" />
@@ -45,29 +48,43 @@
             <div class="m-2 col-6">
                 <DoughnutChart :chartData="chartBidangFak" :options="optionsBidangFak" />
             </div>
-            <div class="m-2 col-6">
-                <LineChart :chartData="chartGrafikPendaftar" :options="optionsGrafikPendaftar" />
-            </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import { reactive, ref, onMounted, computed } from 'vue';
-import { DoughnutChart, LineChart } from 'vue-chart-3';
+import { reactive, ref, onMounted, watchEffect, computed } from 'vue';
+import { BarChart, DoughnutChart, LineChart } from 'vue-chart-3';
 import { Chart, registerables } from "chart.js";
-import pendaftar from "./../api/pendaftar"
+import chart from "./../api/chart"
 
 Chart.register(...registerables);
 
-const state = reactive({
-    pendaftar: []
-})
-
 onMounted(() => {
-    pendaftar.index()
+    chart.index()
         .then((response) => {
-            state.pendaftar = response.data.data
+            // state.chart = response.data.data
+            console.log(response.data.data.bp)
+            for (let i = 0; i < response.data.data.gender.length; i++) {
+                chartGender.labels.push(response.data.data.gender[i].gender.gender);
+                chartGender.datasets[0].data.push(response.data.data.gender[i].total);
+            }
+            for (let i = 0; i < response.data.data.fakultas.length; i++) {
+                chartFakultas.labels.push(response.data.data.fakultas[i].fakultas.fakultas);
+                chartFakultas.datasets[0].data.push(response.data.data.fakultas[i].total);
+            }
+            for (let i = 0; i < response.data.data.bp.length; i++) {
+                chartBP.labels.push(response.data.data.bp[i].bp);
+                chartBP.datasets[0].data.push(response.data.data.bp[i].total);
+            }
+            for (let i = 0; i < response.data.data.tgl_daftar.length; i++) {
+                chartGrafikPendaftar.labels.push(response.data.data.tgl_daftar[i].date);
+                chartGrafikPendaftar.datasets[0].data.push(response.data.data.tgl_daftar[i].total);
+            }
+            for (let i = 0; i < response.data.data.bidang_fakultas.length; i++) {
+                chartBidangFak.labels.push(response.data.data.bidang_fakultas[i].bidang_fak);
+                chartBidangFak.datasets[0].data.push(response.data.data.bidang_fakultas[i].total);
+            }
         })
 })
 
@@ -80,37 +97,11 @@ const count = function (ary, classifier) {
     }, {})
 };
 
-const countByFakultas = computed(() => {
-    return count(state.pendaftar, function (item) {
-        return item.fakultas
-    });
-})
-const countByGender = computed(() => {
-    return count(state.pendaftar, function (item) {
-        return item.gender
-    });
-})
-const countByBidangFak = computed(() => {
-    return count(state.pendaftar, function (item) {
-        return item.bidang_fak
-    });
-})
-const countByTglDaftar = computed(() => {
-    return count(state.pendaftar, function (item) {
-        return item.tgl_daftar.slice(0, 10)
-    });
-})
-const countByNIM = computed(() => {
-    return count(state.pendaftar, function (item) {
-        return item.nim.toString().slice(0, 2)
-    });
-})
-
 const chartFakultas = reactive({
-    labels: ['Teknik', 'Pertanian', 'Peternakan', 'Hukum', 'Ekonomi'],
+    labels: [],
     datasets: [
         {
-            data: [30, 40, 60, 70, 5],
+            data: [],
             backgroundColor: ['#77CEFF', '#0079AF', '#123E6B', '#97B0C4', '#A5C8ED'],
         },
     ],
@@ -120,7 +111,7 @@ const optionsFakultas = ref({
     responsive: true,
     plugins: {
         legend: {
-            position: 'bottom',
+            display: false
         },
         title: {
             display: true,
@@ -130,10 +121,10 @@ const optionsFakultas = ref({
 });
 
 const chartGender = reactive({
-    labels: ['Laki-Laki', 'Perempuan'],
+    labels: [],
     datasets: [
         {
-            data: [30, 40],
+            data: [],
             backgroundColor: ['#77CEFF', '#0079AF'],
         },
     ],
@@ -153,10 +144,10 @@ const optionsGender = ref({
 });
 
 const chartBP = reactive({
-    labels: ['2018', '2019'],
+    labels: [],
     datasets: [
         {
-            data: [45, 60],
+            data: [],
             backgroundColor: ['#77CEFF', '#0079AF'],
         },
     ],
@@ -176,10 +167,10 @@ const optionsBP = ref({
 });
 
 const chartBidangFak = reactive({
-    labels: ['Soshum', 'Saintek'],
+    labels: [],
     datasets: [
         {
-            data: [45, 60],
+            data: [],
             backgroundColor: ['#77CEFF', '#0079AF'],
         },
     ],
@@ -199,26 +190,10 @@ const optionsBidangFak = ref({
 });
 
 const chartGrafikPendaftar = reactive({
-    labels: [
-        '2020-1-1',
-        '2020-1-2',
-        '2020-1-3',
-        '2020-1-4',
-        '2020-1-5',
-        '2020-1-6',
-        '2020-1-7',
-    ],
+    labels: [],
     datasets: [
         {
-            data: [
-                5,
-                3,
-                2,
-                6,
-                8,
-                8,
-                12,
-            ],
+            data: [],
             backgroundColor: ['#77CEFF'],
             borderColor: ['#0079AF'],
         },
@@ -229,7 +204,7 @@ const optionsGrafikPendaftar = ref({
     responsive: true,
     plugins: {
         legend: {
-            position: 'bottom',
+            display: false
         },
         title: {
             display: true,
