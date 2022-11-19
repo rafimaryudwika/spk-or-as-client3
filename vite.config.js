@@ -10,7 +10,7 @@ export default defineConfig({
     plugins: [vue()],
     build: {
         rollupOptions: {
-            external: ['pinia'],
+            external: [],
             // https://rollupjs.org/guide/en/#big-list-of-options
         },
     },
