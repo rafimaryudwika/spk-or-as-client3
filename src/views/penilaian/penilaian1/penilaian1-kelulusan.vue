@@ -59,11 +59,11 @@
                                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-600">
                                         <td
                                             class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            {{  peserta1.nim  }}
+                                            {{ peserta1.nim }}
                                         </td>
                                         <td
                                             class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                            {{  peserta1.nama  }}
+                                            {{ peserta1.nama }}
                                         </td>
                                         <td v-if="peserta1.lulus == 1"
                                             class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-gray-400">
@@ -84,44 +84,30 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import { onMounted, ref, reactive, computed, watchEffect } from 'vue'
 import penilaian1API from "./../../../api/listPeserta/tahap1/peserta";
 
-export default {
-    components: {},
+const state = reactive({
+    peserta1: [],
+    penilaian1: [],
+})
 
-    setup() {
-        const state = reactive({
-            peserta1: [],
-            penilaian1: [],
-        })
+onMounted(() => {
+    penilaian1API.index()
+        .then((response) => {
+            state.peserta1 = response.data.data
+        }).catch((err) => {
+            console.log(err.response.data)
+        });
+})
 
-        onMounted(() => {
-            penilaian1API.index()
-                .then((response) => {
-                    state.peserta1 = response.data.data
-                }).catch((err) => {
-                    console.log(err.response.data)
-                });
-        })
+const filteredKelulusan = computed(() => {
+    return state.peserta1.filter((e) => {
+        return e.lulus == 1;
+    }).sort((a, b) => {
+        return a.total - b.total;
+    })
+})
 
-        const filteredKelulusan = computed(() => {
-            return state.peserta1.filter((e) => {
-                return e.lulus == 1;
-            }).sort((a, b) => {
-                return a.total - b.total;
-            })
-        })
-
-
-        return {
-            state,
-            filteredKelulusan
-        }
-    },
-}
 </script>
-
-<style>
-</style>

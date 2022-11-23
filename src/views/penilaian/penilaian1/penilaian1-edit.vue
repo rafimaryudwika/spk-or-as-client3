@@ -81,6 +81,7 @@
 <script setup>
 import { onMounted, reactive, ref, watchEffect, computed } from 'vue'
 import penilaianAPI from './../../../api/listPeserta/tahap1/peserta'
+import subKriteriaAPI from './../../../api/listKriteria/tahap1/subkriteria1'
 import { useRouter, useRoute } from 'vue-router'
 
 const state = reactive({
@@ -128,11 +129,11 @@ watchEffect(() => {
 
 const route = useRoute()
 onMounted(async () => {
-    await http.get('/subkriteria1')
+    await subKriteriaAPI.index
         .then((response) => {
             state.subkriteria = response.data.data
         })
-    await http.get(`/penilaian1/show/${route.params.id}`)
+    await penilaianAPI.show(route.params.id)
         .then((response) => {
             inputPenilaian.nim = response.data.data[0].nim
             for (let i = 0; i < state.subkriteria.length; i++) {
