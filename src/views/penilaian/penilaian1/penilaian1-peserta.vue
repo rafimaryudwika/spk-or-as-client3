@@ -267,14 +267,17 @@ const sortedData = computed(() => {
 })
 const validation = ref([]);
 function getData() {
-    penilaianAPI.import()
-        .then(() => {
-            window.location.reload();
-        }).catch((err) => {
-            validation.value = err.response.data
-        });
+    if (confirm("Apakah anda yakin menambahkan pendaftar yang sudah mendaftar ulang ke penilaian?")) {
+        penilaianAPI.import()
+            .then(() => {
+                window.location.reload();
+            }).catch((err) => {
+                validation.value = err.response.data
+            });
+    }
 }
 </script>
 
 <style>
+
 </style>

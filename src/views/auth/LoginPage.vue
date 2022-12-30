@@ -9,12 +9,16 @@
                         <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Your
                             email</label>
                         <input v-model="user.email" type="email" class="form-control" required autofocus />
+                        <p v-if="validation.email" class="mt-2 text-sm text-red-600 dark:text-red-500">
+                            {{ validation.email[0] }}</p>
                     </div>
                     <div class="mb-6">
                         <label for="password"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Your
                             password</label>
                         <input v-model="user.password" type="password" class="form-control" />
+                        <p v-if="validation.password" class="mt-2 text-sm text-red-600 dark:text-red-500">
+                            {{ validation.password[0] }}</p>
                     </div>
                     <div class="flex items-start mb-6">
                         <div class="flex items-center h-5">
@@ -34,7 +38,7 @@
 </template>
 
 <script setup>
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router'
 import { useAuth } from './../../store/auth';
 
@@ -46,10 +50,16 @@ const user = reactive({
     password: ''
 })
 
+const validation = ref([]);
+
 const login = async () => {
-    await store.login(user)
-    router.replace({
-        name: 'dashboard'
-    })
+    await store.login(user).
+        then(() => {
+            router.replace({
+                name: 'dashboard'
+            })
+        }).catch((err) => {
+            validation.value = err
+        });
 }
 </script>

@@ -6,6 +6,9 @@ export default {
             params: params,
         })
     },
+    transpose() {
+        return http.get('api/subkriteria3/t')
+    },
 
     show(id) {
         return http.get('api/subkriteria3/' + id)

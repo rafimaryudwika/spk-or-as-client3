@@ -27,8 +27,8 @@ export const useAuth = defineStore('auth-store', () => {
             await getUser()
         } catch (err) {
             user.value = null
-            console.error('Error loading new arrivals:', err)
-            return err
+            // console.log(err.response.data.errors)
+            throw err.response.data.errors
         }
     }
 

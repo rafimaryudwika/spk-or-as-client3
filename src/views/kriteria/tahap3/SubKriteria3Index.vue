@@ -43,7 +43,7 @@
                 <div class="overflow-y-auto sm:-mx-6 lg:-mx-0">
                     <div class="py-2 inline-clip sm:px-6 lg:px-4">
                         <div class="sm:rounded-lg">
-                            <div v-if="role === 'admin'||role ==='panitia'" class="col-12">
+                            <div v-if="role === 'admin' || role === 'panitia'" class="col-12">
                                 <router-link :to="{
                                     name: 'subkriteria3.tambah',
                                 }" type="button"
@@ -78,7 +78,7 @@
                                 <tbody>
                                     <!-- Product 1 -->
 
-                                    <tr v-for="sk in state.listSubKriteria" :key="sk.id_sk3"
+                                    <tr v-for="sk in state.subkriteria" :key="sk.id_sk3"
                                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-600">
                                         <td
                                             class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -86,7 +86,7 @@
                                         </td>
                                         <td
                                             class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            {{ sk.subkriteria }}
+                                            {{ sk.sub_kriteria }}
                                         </td>
 
                                         <td
@@ -98,7 +98,7 @@
                                             class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
                                             {{ sk.bobot }}
                                         </td>
-                                        <td v-if="role === 'admin'||role ==='panitia'"
+                                        <td v-if="role === 'admin' || role === 'panitia'"
                                             class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
                                             <router-link :to="{
                                                 name: 'subkriteria3.edit',
@@ -108,7 +108,7 @@
                                             }"
                                                 class="text-blue-600 hover:text-blue-900 dark:text-blue-500 dark:hover:underline">
                                                 Edit</router-link>
-                                            <a @click.prevent="destroy(sk.id_sk3, index)" href=""
+                                            <a @click.prevent="destroy(sk.id_sk3)" href=""
                                                 class="px-6 py-4 text-sm font-medium text-right text-red-500 whitespace-nowrap">Delete</a>
                                         </td>
                                     </tr>
@@ -130,58 +130,33 @@ import { useAuth } from './../../../store/auth'
 
 const state = reactive({
     subkriteria: [],
-    listSubKriteria: []
 })
 onMounted(() => {
-    subKriteriaAPI.index()
+    subKriteriaAPI.transpose()
         .then((response) => {
             state.subkriteria = response.data.data
         }).catch((err) => {
 
         });
 })
-
-watchEffect(() => {
-    for (let i = 0; i < state.subkriteria.length; i++) {
-        const outer = state.subkriteria[i];
-        if (outer.subkriteria) {
-            for (let j = 0; j < outer.subkriteria.length; j++) {
-                const inner = outer.subkriteria[j];
-                const id_sk3 = `${inner.id_sk3}`
-                const kriteria = `${outer.kriteria}`
-                const subkriteria = `${inner.sub_kriteria}`
-                const bobot = `${inner.bobot}`
-                state.listSubKriteria.push({
-                    id_sk3,
-                    kriteria,
-                    subkriteria,
-                    bobot
-                })
-            }
-        } else {
-            state.listSubKriteria.push({
-                id_sk3: outer.id_sk3,
-                kriteria: outer.kriteria,
-                subkriteria: outer.kriteria,
-                bobot: outer.bobot_sk
-            })
-        }
-    }
-})
-
 const auth = useAuth();
 
 const role = computed(() => {
     return auth.role
 })
 
-const destroy = (id, index) => {
-    subKriteriaAPI.delete(id)
-        .then(() => {
-            state.subkriteria.splice(index, 1)
-        }).catch((err) => {
-            console.log(err.response.data)
-        });
+const destroy = (id) => {
+    if (confirm("Apakah anda yakin menghapus sub-kriteria ini?")) {
+        subKriteriaAPI.delete(id)
+            .then(() => {
+                subKriteriaAPI.transpose()
+                    .then((response) => {
+                        state.subkriteria = response.data.data
+                    })
+            }).catch((err) => {
+                alert(err.response.data.message)
+            });
+    }
 }
 
 </script>

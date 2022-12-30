@@ -39,7 +39,7 @@
                 <div class="overflow-y-auto sm:-mx-6 lg:-mx-0">
                     <div class="py-2 inline-clip sm:px-6 lg:px-4">
                         <div class="sm:rounded-lg">
-                            <div v-if="role === 'admin'||role ==='panitia'" class="col-12">
+                            <div v-if="role === 'admin' || role === 'panitia'" class="col-12">
                                 <router-link :to="{
                                     name: 'kriteria2.tambah',
                                 }" type="button"
@@ -82,7 +82,7 @@
                                             class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
                                             {{ kriteria.bobot }}
                                         </td>
-                                        <td v-if="role === 'admin'||role ==='panitia'"
+                                        <td v-if="role === 'admin' || role === 'panitia'"
                                             class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
                                             <router-link :to="{
                                                 name: 'kriteria2.edit',
@@ -92,7 +92,7 @@
                                             }"
                                                 class="text-blue-600 hover:text-blue-900 dark:text-blue-500 dark:hover:underline">
                                                 Edit</router-link>
-                                            <a @click.prevent="destroy(kriteria.id_k2, index)" href=""
+                                            <a @click.prevent="destroy(kriteria.id_k2)" href=""
                                                 class="px-6 py-4 text-sm font-medium text-right text-red-500 whitespace-nowrap">Delete</a>
                                         </td>
                                     </tr>
@@ -128,13 +128,19 @@ onMounted(() => {
 
         });
 })
-const destroy = (id, index) => {
-    kriteriaAPI.delete(id)
-        .then(() => {
-            state.kriteria.splice(index, 1)
-        }).catch((err) => {
-            console.log(err.response.data)
-        });
+const destroy = (id) => {
+    if (confirm("Apakah anda yakin menghapus kriteria ini?")) {
+        kriteriaAPI.delete(id)
+            .then(() => {
+                const idToRemove = id;
+                const index = state.kriteria.map(function (item) {
+                    return item.id
+                }).indexOf(idToRemove);
+                state.kriteria.splice(index, 1)
+            }).catch((err) => {
+                alert(err.response.data.message)
+            });
+    }
 }
 
 </script>

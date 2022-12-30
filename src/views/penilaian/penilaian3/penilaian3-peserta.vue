@@ -5,7 +5,7 @@
                 Data Peserta Tahap 3
             </h1>
         </div>
-                        <div class="p-2">
+        <div class="p-2">
             <div id="alert-5" class="flex p-4 bg-gray-100 rounded-lg dark:bg-gray-700" role="alert">
                 <svg aria-hidden="true" class="flex-shrink-0 w-5 h-5 text-gray-700 dark:text-gray-300"
                     fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -267,14 +267,17 @@ const sortedData = computed(() => {
 })
 const validation = ref([]);
 function getData() {
-    penilaianAPI.import()
-        .then(() => {
-            window.location.reload();
-        }).catch((err) => {
-            validation.value = err.response.data
-        });
+    if (confirm("Apakah anda yakin menambahkan pendaftar yang sudah mendaftar ulang ke penilaian?")) {
+        penilaianAPI.import()
+            .then(() => {
+                window.location.reload();
+            }).catch((err) => {
+                validation.value = err.response.data
+            });
+    }
 }
 </script>
 
 <style>
+
 </style>
