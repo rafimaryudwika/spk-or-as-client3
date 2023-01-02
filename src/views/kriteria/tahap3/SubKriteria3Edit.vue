@@ -5,7 +5,7 @@
                 Edit Data Sub-Kriteria
             </h1>
         </div>
-                <div class="p-2">
+        <div class="p-2">
             <div id="alert-5" class="flex p-4 bg-gray-100 rounded-lg dark:bg-gray-700" role="alert">
                 <svg aria-hidden="true" class="flex-shrink-0 w-5 h-5 text-gray-700 dark:text-gray-300"
                     fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -105,7 +105,7 @@ onMounted(() => {
     subKriteriaAPI.show(route.params.id)
         .then((response) => {
             state.kriteria = response.data.data
-            console.log(state.kriteria)
+            // console.log(state.kriteria)
             inputSubKriteria.sub_kriteria = response.data.data.sub_kriteria
             inputSubKriteria.kode = response.data.data.kode
             inputSubKriteria.bobot = response.data.data.bobot
