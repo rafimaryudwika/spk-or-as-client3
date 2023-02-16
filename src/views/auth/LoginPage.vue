@@ -2,7 +2,7 @@
     <div class="flex-1 p-8 bg-white dark:bg-gray-800">
         <div class="container flex items-center justify-center h-screen px-4 mx-auto">
             <a
-                class="items-center block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                class="items-center block max-w-lg p-6 bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                 <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Login</h5>
                 <form @submit.prevent="login">
                     <div class="mb-6">

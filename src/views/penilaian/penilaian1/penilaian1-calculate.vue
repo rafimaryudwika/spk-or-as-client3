@@ -18,7 +18,7 @@
     </div>
 </template>
 
-<script setup>
+<script async setup>
 import { onMounted, reactive } from 'vue'
 import calc from "./../../../api/calc";
 import Alert from "./../../../components/AlertComponent.vue"
@@ -37,11 +37,11 @@ const state = reactive({
 onMounted(() => {
     calc.tahap1()
         .then((response) => {
-            state.kriteria = response.data.data.kriteria.data
-            state.subkriteria = response.data.data.subkriteria.data
-            state.listSubKriteria = response.data.data.subkriteriatranspose.data
-            state.peserta1 = response.data.data.penilaian.data
-            state.fakultas = response.data.data.fakultas.data
+            state.kriteria = response.data.data.kriteria
+            state.subkriteria = response.data.data.subkriteria
+            state.listSubKriteria = response.data.data.subkriteriatranspose
+            state.peserta1 = response.data.data.penilaian
+            state.fakultas = response.data.data.fakultas
             state.conditionalLength = state.subkriteria.filter(item => 'subkriteria' in item).length * 2 // next time pindahin ke backend
         })
 })

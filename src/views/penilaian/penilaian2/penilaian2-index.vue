@@ -161,8 +161,6 @@
 <script async setup>
 import { onMounted, ref, reactive, computed, watchEffect } from 'vue'
 import penilaianAPI from "./../../../api/listPeserta/tahap2/peserta";
-import kriteriaAPI from "./../../../api/listKriteria/tahap2/kriteria2";
-import subKriteriaAPI from "./../../../api/listKriteria/tahap2/subkriteria2";
 
 const state = reactive({
     peserta1: [],
@@ -175,21 +173,11 @@ const state = reactive({
 })
 
 onMounted(async () => {
-    await subKriteriaAPI.index()
-        .then((response) => {
-            state.subkriteria = response.data.data
-        }).catch((err) => {
-            console.log(err.response.data)
-        });
-    await kriteriaAPI.index()
-        .then((response) => {
-            state.kriteria = response.data.data
-        }).catch((err) => {
-            console.log(err.response.data)
-        });
     await penilaianAPI.index()
         .then((response) => {
-            state.peserta1 = response.data.data
+            state.subkriteria = response.data.data.subkriteria
+            state.kriteria = response.data.data.kriteria
+            state.peserta1 = response.data.data.penilaian
         }).catch((err) => {
             console.log(err.response.data)
         });
@@ -237,4 +225,5 @@ const sortedData = computed(() => {
 </script>
 
 <style>
+
 </style>

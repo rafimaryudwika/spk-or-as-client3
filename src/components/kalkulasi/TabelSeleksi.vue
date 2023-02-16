@@ -140,28 +140,30 @@
                                             <template v-if="k.subkriteria">
                                                 <td v-for="subk in k.subkriteria" :key="subk.id_sk1"
                                                     :class="[warna(peserta1.normalisasi[k.k_sc][subk.sk_sc]), 'px-6', 'py-4', 'text-sm', 'text-gray-500', 'whitespace-nowrap', 'dark:text-gray-400']">
-                                                    {{ peserta1.normalisasi[k.k_sc][subk.sk_sc] }}
+                                                    {{
+                                                        parseFloat(peserta1.normalisasi[k.k_sc][subk.sk_sc]).toFixed(3)
+                                                    }}
                                                 </td>
                                                 <td
                                                     :class="[warna(peserta1.normalisasi[k.k_sc].total), 'px-6', 'py-4', 'text-sm', 'text-gray-500', 'whitespace-nowrap', 'dark:text-gray-400']">
-                                                    {{ peserta1.normalisasi[k.k_sc].total }}
+                                                    {{ parseFloat(peserta1.normalisasi[k.k_sc].total).toFixed(3) }}
                                                 </td>
                                                 <td
                                                     :class="[warna(peserta1.new_norm[k.k_sc]), 'px-6', 'py-4', 'text-sm', 'text-gray-500', 'whitespace-nowrap', 'dark:text-gray-400']">
-                                                    {{ peserta1.new_norm[k.k_sc] }}
+                                                    {{ parseFloat(peserta1.new_norm[k.k_sc]).toFixed(3) }}
                                                 </td>
                                             </template>
                                             <template v-else>
                                                 <td
                                                     :class="[warna(peserta1.normalisasi[k.k_sc]), 'px-6', 'py-4', 'text-sm', 'text-gray-500', 'whitespace-nowrap', 'dark:text-gray-400']">
-                                                    {{ peserta1.normalisasi[k.k_sc] }}
+                                                    {{ parseFloat(peserta1.normalisasi[k.k_sc]).toFixed(3) }}
                                                 </td>
                                             </template>
                                         </template>
                                     </template>
                                     <td
                                         :class="[warna(peserta1.total), 'px-6', 'py-4', 'text-sm', 'text-gray-500', 'whitespace-nowrap', 'dark:text-gray-400']">
-                                        {{ peserta1.total }}
+                                        {{ parseFloat(peserta1.total).toFixed(3) }}
                                     </td>
                                     <td
                                         :class="[warna(peserta1.total), 'px-6', 'py-4', 'text-sm', 'text-gray-500', 'whitespace-nowrap', 'dark:text-gray-400']">
@@ -175,13 +177,15 @@
                                         class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-gray-400">
                                         BELUM LULUS
                                     </td>
-                                    <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
+                                    <td v-if="peserta1.total < 0.5 || peserta1.lulus == 0"
+                                        class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
                                         <router-link :to="{
-    name: 'penilaian1.evaluate',
-    params: {
-        id: peserta1.nim,
-    },
-}" class="text-blue-600 hover:text-blue-900 dark:text-blue-500 dark:hover:underline">
+                                            name: 'penilaian1.evaluate',
+                                            params: {
+                                                id: peserta1.nim,
+                                            },
+                                        }"
+                                            class="text-blue-600 hover:text-blue-900 dark:text-blue-500 dark:hover:underline">
                                             Evaluasi</router-link>
                                     </td>
                                 </tr>

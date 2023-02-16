@@ -85,7 +85,7 @@
                                         </td>
                                         <td
                                             class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                            {{ pendaftar.gender }}
+                                            {{ pendaftar.gender.gender }}
                                         </td>
                                         <td
                                             class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
@@ -93,11 +93,11 @@
                                         </td>
                                         <td
                                             class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                            {{ pendaftar.fakultas }}
+                                            {{ pendaftar.fakultas.fakultas }}
                                         </td>
                                         <td
                                             class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                            {{ pendaftar.jurusan }}
+                                            {{ pendaftar.jurusan.jurusan }}
                                         </td>
                                         <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
                                             <router-link :to="{
@@ -113,41 +113,8 @@
                                 </tbody>
                             </table>
                             <br>
-                            <nav aria-label="Page navigation">
-                                <ul class="inline-flex items-center -space-x-px">
-                                    <li>
-                                        <a href="#" @click="prevPage"
-                                            class="block px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                                            <span class="sr-only">Previous</span>
-                                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd"
-                                                    d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                                                    clip-rule="evenodd"></path>
-                                            </svg>
-                                        </a>
-                                    </li>
-                                    <li v-for="pages in state.page" :key="pages.name">
-                                        <a href="#" @click="clickPage(pages.name)"
-                                            :class="[isPageActive(pages.name), 'px-3', 'py-2', 'leading-tight', 'text-gray-500', 'bg-white', 'border', 'border-gray-300', 'hover:bg-gray-100', 'hover:text-gray-700', 'dark:bg-gray-800', 'dark:border-gray-700', 'dark:text-gray-400', 'dark:hover:bg-gray-700', 'dark:hover:text-white']"
-                                            :disabled="pages.isDisabled">
-                                            {{ pages.name }}</a>
-                                    </li>
-
-                                    <li>
-                                        <a href="#" @click="nextPage"
-                                            class="block px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                                            <span class="sr-only">Next</span>
-                                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd"
-                                                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                                    clip-rule="evenodd"></path>
-                                            </svg>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
+                            <Pagination :table="state.pendaftar" :pageSize="12" :currentPage="1"
+                                @pageChanged="onPageChange" />
 
                         </div>
                     </div>
@@ -160,6 +127,7 @@
 <script setup>
 import { onMounted, ref, reactive, computed, watchEffect } from 'vue'
 import pendaftar from "./../../api/pendaftar"
+import Pagination from "./../../components/PaginationData.vue"
 
 const state = reactive({
     pendaftar: [],
@@ -177,23 +145,16 @@ onMounted(() => {
         })
 })
 
-watchEffect(() => {
-    let pageCount = Math.ceil(state.pendaftar.length / state.pageSize)
-    state.page = []
-    for (let i = 1; i <= pageCount; i++) {
-        state.page.push({
-            name: i,
-            isDisabled: i == state.currentPage
-        })
-    }
-})
-
-
 function sorting(s) {
     if (s === state.currentSort) {
         state.currentSortDir = state.currentSortDir === 'asc' ? 'desc' : 'asc'
     }
     state.currentSort = s
+}
+
+function onPageChange(page) {
+    console.log(page)
+    state.currentPage = page;
 }
 
 function nextPage() {
@@ -225,5 +186,17 @@ const sortedData = computed(() => {
         let end = state.currentPage * state.pageSize;
         if (index >= start && index < end) return true;
     });
+})
+
+const pagesComputed = computed(() => {
+    let pageCount = Math.ceil(state.pendaftar.length / state.pageSize)
+    const page = []
+    for (let i = 1; i <= pageCount; i++) {
+        page.push({
+            name: i,
+            isDisabled: i == state.currentPage
+        })
+    }
+    return page;
 })
 </script>

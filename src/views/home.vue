@@ -63,14 +63,12 @@ Chart.register(...registerables);
 onMounted(() => {
     chart.index()
         .then((response) => {
-            // state.chart = response.data.data
-            console.log(response.data.data.bp)
             for (let i = 0; i < response.data.data.gender.length; i++) {
                 chartGender.labels.push(response.data.data.gender[i].gender.gender);
                 chartGender.datasets[0].data.push(response.data.data.gender[i].total);
             }
             for (let i = 0; i < response.data.data.fakultas.length; i++) {
-                chartFakultas.labels.push(response.data.data.fakultas[i].fakultas.fakultas);
+                chartFakultas.labels.push(response.data.data.fakultas[i].fakultas);
                 chartFakultas.datasets[0].data.push(response.data.data.fakultas[i].total);
             }
             for (let i = 0; i < response.data.data.bp.length; i++) {

@@ -110,11 +110,11 @@
                                         </td>
                                         <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
                                             <router-link :to="{
-    name: 'penilaian3.view',
-    params: {
-        id: peserta1.nim,
-    },
-}" class="text-blue-600 hover:text-blue-900 dark:text-blue-500 dark:hover:underline">
+                                                name: 'penilaian3.view',
+                                                params: {
+                                                    id: peserta1.nim,
+                                                },
+                                            }" class="text-blue-600 hover:text-blue-900 dark:text-blue-500 dark:hover:underline">
                                                 Lihat</router-link>
                                         </td>
 
@@ -196,7 +196,7 @@ const state = reactive({
 onMounted(() => {
     penilaianAPI.index()
         .then((response) => {
-            state.peserta1 = response.data.data
+            state.peserta1 = response.data.data.penilaian
         }).catch((err) => {
             console.log(err.response.data)
         });

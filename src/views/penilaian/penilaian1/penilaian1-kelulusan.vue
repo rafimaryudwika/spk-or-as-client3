@@ -96,7 +96,7 @@ const state = reactive({
 onMounted(() => {
     penilaian1API.index()
         .then((response) => {
-            state.peserta1 = response.data.data
+            state.peserta1 = response.data.data.penilaian
         }).catch((err) => {
             console.log(err.response.data)
         });

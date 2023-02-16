@@ -2,17 +2,17 @@ import http from 'axios'
 
 export default {
     tahap1(params) {
-        return http.get('api/penilaian1/calc-complete', {
+        return http.get('api/penilaian1', {
             params: params,
         })
     },
     tahap2(params) {
-        return http.get('api/penilaian2/calc-complete', {
+        return http.get('api/penilaian2', {
             params: params,
         })
     },
     tahap3(params) {
-        return http.get('api/penilaian3/calc-complete', {
+        return http.get('api/penilaian3', {
             params: params,
         })
     },

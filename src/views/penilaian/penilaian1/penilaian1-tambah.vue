@@ -56,7 +56,7 @@
                                 <div v-for="(sk, index) in state.listSubKriteria" :key="index" class="mb-6">
                                     <label for="sk.k_sc"
                                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{
-                                        sk.kriteria
+                                            sk.kriteria
                                         }}</label>
                                     <input type="text" id="sk.k_sc"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -98,8 +98,8 @@ onMounted(async () => {
         })
     await penilaianAPI.show(route.params.id)
         .then((response) => {
-            inputPenilaian.nim = response.data.data[0].nim
-            state.peserta = response.data.data[0]
+            inputPenilaian.nim = response.data.data.nim
+            state.peserta = response.data.data
             // console.log(state.peserta)
         })
 
