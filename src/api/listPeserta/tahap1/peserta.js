@@ -22,7 +22,7 @@ export default {
     },
 
     import() {
-        return http.post('api/penilaian1/import')
+        return http.put('api/penilaian1/import')
     },
 
     update(id, data) {
